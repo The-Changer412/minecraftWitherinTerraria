@@ -1,0 +1,3 @@
+displayName = Minecraft WIther
+author = bossmania
+version = 0.1
