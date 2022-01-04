@@ -12,19 +12,6 @@ namespace MinecraftWither.NPCs
 
     public class WitherSkeleton : ModNPC
     {
-
-        //a temporary function that send a message to the chat for debugging purpose.
-        static void Talk(string message, int r=150, int g=250, int b=150) {
-
-            //check to see if the world is singleplayer or multiplayer
-            if (Main.netMode != NetmodeID.Server) {
-                Main.NewText(message, (byte)r, (byte)g, (byte)b);
-            }
-            else {
-                NetMessage.BroadcastChatMessage(NetworkText.FromLiteral(message), new Color(r, g, b));
-            }
-        }
-
         public override void SetStaticDefaults()
         {
             //set the amount of frames
