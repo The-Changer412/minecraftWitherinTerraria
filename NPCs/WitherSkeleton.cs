@@ -12,6 +12,19 @@ namespace MinecraftWither.NPCs
 
     public class WitherSkeleton : ModNPC
     {
+
+        //a temporary function that send a message to the chat for debugging purpose.
+        static void Talk(string message, int r=150, int g=250, int b=150) {
+
+            //check to see if the world is singleplayer or multiplayer
+            if (Main.netMode != NetmodeID.Server) {
+                Main.NewText(message, (byte)r, (byte)g, (byte)b);
+            }
+            else {
+                NetMessage.BroadcastChatMessage(NetworkText.FromLiteral(message), new Color(r, g, b));
+            }
+        }
+
         public override void SetStaticDefaults()
         {
             //set the amount of frames
@@ -57,17 +70,6 @@ namespace MinecraftWither.NPCs
           }
         }
 
-        //give the wither skeleton a 50% chance to spawn after moon lord has been defeated
-        public override float SpawnChance(NPCSpawnInfo spawnInfo)
-        {
-          if (NPC.downedMoonlord)
-          {
-            return SpawnCondition.Underworld.Chance * 0.5f;
-          } else
-          {
-           return 0f;
-          }
-        }
 
         //animate the wither skeleton
         public override void FindFrame(int frameHeight)
@@ -82,6 +84,30 @@ namespace MinecraftWither.NPCs
             {
                 npc.frameCounter = 0;
                 npc.frame.Y =(int) (npc.frameCounter * frameHeight);
+            }
+        }
+
+        //create the gore when the wither skeleton die
+        public override bool CheckDead()
+        {
+            Gore.NewGore(npc.position, npc.velocity, mod.GetGoreSlot("Gores/WitherSkeletonGoreHead"), 1f);
+            Gore.NewGore(npc.position, npc.velocity, mod.GetGoreSlot("Gores/WitherSkeletonGoreBody"), 1f);
+            Gore.NewGore(npc.position, npc.velocity, mod.GetGoreSlot("Gores/WitherSkeletonGoreArm"), 1f);
+            Gore.NewGore(npc.position, npc.velocity, mod.GetGoreSlot("Gores/WitherSkeletonGoreArm"), 1f);
+            Gore.NewGore(npc.position, npc.velocity, mod.GetGoreSlot("Gores/WitherSkeletonGoreLeg"), 1f);
+            Gore.NewGore(npc.position, npc.velocity, mod.GetGoreSlot("Gores/WitherSkeletonGoreLeg"), 1f);
+            return true;
+        }
+
+        //give the wither skeleton a 50% chance to spawn after moon lord has been defeated
+        public override float SpawnChance(NPCSpawnInfo spawnInfo)
+        {
+            if (NPC.downedMoonlord)
+            {
+                return SpawnCondition.Underworld.Chance * 0.5f;
+            } else
+            {
+                return 0f;
             }
         }
     }

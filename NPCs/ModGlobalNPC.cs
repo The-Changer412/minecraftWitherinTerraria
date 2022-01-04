@@ -12,18 +12,13 @@ namespace ExpertModePlusPlus.NPCs
 
     class ModGlobalNPC : GlobalNPC
     {
-
-        static void Talk(string message, int r=255, int g=25, int b=25) {
-
-            //check to see if the world is singleplayer or multiplayer
-
-        }
-
         public override bool CheckDead(NPC npc)
         {
           if (npc.type == NPCID.MoonLordCore && MinecraftWither.MinecraftWither.hellMessage == false)
           {
             string message = "A new enemy has moved into the underworld.";
+
+            //check to see if the world is singleplayer or multiplayer
             if (Main.netMode != NetmodeID.Server) {
                 //send the message in singleplayer with the color
                 Main.NewText(message, (byte)255, (byte)46, (byte)46);
