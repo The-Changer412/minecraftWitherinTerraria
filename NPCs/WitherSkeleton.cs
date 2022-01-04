@@ -29,9 +29,9 @@ namespace MinecraftWither.NPCs
         {
             //set the amount of frames
             Main.npcFrameCount[npc.type] = 10;
-            //todo, make him animate
         }
 
+        //set the stats of the wither skeleton
         public override void SetDefaults()
         {
             npc.width = 36;
@@ -42,7 +42,6 @@ namespace MinecraftWither.NPCs
             npc.damage = 100;
             npc.defense = 40;
             npc.value = 10000f;
-            npc.rarity = 1;
             npc.buffImmune[BuffID.OnFire] = true;
             npc.lavaImmune = true;
             npc.knockBackResist = 0.25f;
@@ -60,7 +59,15 @@ namespace MinecraftWither.NPCs
         //give the player poison when hitted
         public override void OnHitPlayer (Player target, int damage, bool crit)
         {
-          target.AddBuff(BuffID.Poisoned, 600);
+          if (Main.expertMode == true)
+          {
+            // target.AddBuff(BuffID.Poisoned, 900);
+            target.AddBuff(mod.BuffType("WitherDebuff"), 900);
+          } else
+          {
+            // target.AddBuff(BuffID.Poisoned, 600);
+            target.AddBuff(mod.BuffType("WitherDebuff"), 600);
+          }
         }
 
         //give the wither skeleton a 50% chance to spawn after moon lord has been defeated
