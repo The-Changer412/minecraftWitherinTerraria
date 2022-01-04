@@ -1,2 +1,3 @@
 # Minecraft Wither In Terraria
-This is a Terraria mod that adds in the minecraft wither into terraria
+This is a Terraria mod that adds in the wither, wither skeleton, soul sand, and the beacon from Minecraft.
+For legal reasons, all properties from this mod belongs to Mojang Studios, and this mod is not made and own by Mojang Studios.

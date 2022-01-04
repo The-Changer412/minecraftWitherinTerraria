@@ -1,1 +1,2 @@
-Minecraft WIther is a pretty cool mod, it does...this. Modify this file with a description of your mod.
+Minecraft Wither is a mod that adds in the wither, wither skeleton, soul sand, and the beacon from Minecraft.
+For legal reasons, all properties from this mod belongs to Mojang Studios, and this mod is not made and own by Mojang Studios.
