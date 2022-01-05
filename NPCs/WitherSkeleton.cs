@@ -114,13 +114,14 @@ namespace MinecraftWither.NPCs
             }
         }
 
-        //give the skull of the wither skeleton a 5% to drop from the wither skeleton
+        //give the skull of the wither skeleton a 5% chance to drop from the wither skeleton and a 100% chance to drop the soul sand
         public override void NPCLoot()
         {
             if (rand.Next(0, 101) <= 5)
             {
                 Item.NewItem(npc.getRect(), ModContent.ItemType<Items.WitherSkeletonSkull>(), 1);
             }
+            Item.NewItem(npc.getRect(), ModContent.ItemType<Items.SoulSand>(), 1);
         }
     }
 }

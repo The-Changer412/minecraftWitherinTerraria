@@ -5,6 +5,8 @@ using Terraria.ID;
 using Terraria.ModLoader;
 using Terraria.Localization;
 using Terraria.ModLoader.IO;
+using Terraria.Enums;
+
 using MinecraftWither;
 
 namespace ExpertModePlusPlus.NPCs
@@ -16,7 +18,7 @@ namespace ExpertModePlusPlus.NPCs
         {
           if (npc.type == NPCID.MoonLordCore && MinecraftWither.MinecraftWither.hellMessage == false)
           {
-            string message = "A new enemy has moved into the underworld.";
+            string message = "The curse, that the moon lord has put in the underworld, has been removed.";
 
             //check to see if the world is singleplayer or multiplayer
             if (Main.netMode != NetmodeID.Server) {
@@ -27,6 +29,7 @@ namespace ExpertModePlusPlus.NPCs
                 //send the message in multiplayer with the color
                 NetMessage.BroadcastChatMessage(NetworkText.FromLiteral(message), new Color(255, 46, 46));
             }
+
             MinecraftWither.MinecraftWither.hellMessage = true;
           }
           return true;
