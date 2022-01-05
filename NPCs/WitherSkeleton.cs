@@ -13,6 +13,9 @@ namespace MinecraftWither.NPCs
     public class WitherSkeleton : ModNPC
     {
 
+        //create the random class
+        Random rand = new Random();
+
         //a temporary function that send a message to the chat for debugging purpose.
         static void Talk(string message, int r=150, int g=250, int b=150) {
 
@@ -41,7 +44,7 @@ namespace MinecraftWither.NPCs
             npc.aiStyle = 3;
             npc.damage = 100;
             npc.defense = 40;
-            npc.value = 10000f;
+            npc.value = 2000f;
             npc.buffImmune[BuffID.OnFire] = true;
             npc.lavaImmune = true;
             npc.knockBackResist = 0.25f;
@@ -108,6 +111,15 @@ namespace MinecraftWither.NPCs
             } else
             {
                 return 0f;
+            }
+        }
+
+        //give the skull of the wither skeleton a 5% to drop from the wither skeleton
+        public override void NPCLoot()
+        {
+            if (rand.Next(0, 101) <= 5)
+            {
+                Item.NewItem(npc.getRect(), ModContent.ItemType<Items.WitherSkeletonSkull>(), 1);
             }
         }
     }
