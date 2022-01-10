@@ -2,7 +2,7 @@ using Microsoft.Xna.Framework;
 using Terraria;
 using Terraria.ModLoader;
 
-namespace MinecraftWither.Tiles
+namespace minecraftWitherinTerraria.Tiles
 {
     public class WitherSkeletonSkull : ModTile
     {

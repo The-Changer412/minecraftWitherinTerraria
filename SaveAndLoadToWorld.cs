@@ -5,7 +5,7 @@ using Terraria.ModLoader;
 using Terraria.ModLoader.IO;
 using MinecraftWither;
 
-namespace MinecraftWither
+namespace minecraftWitherinTerraria
 {
     public class SaveAndLoadToWorld : ModWorld
     {

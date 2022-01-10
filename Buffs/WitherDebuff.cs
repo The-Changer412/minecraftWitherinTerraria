@@ -1,7 +1,7 @@
 using Terraria;
 using Terraria.ModLoader;
 
-namespace MinecraftWither.Buffs
+namespace minecraftWitherinTerraria.Buffs
 {
   public class WitherDebuff : ModBuff
   {

@@ -5,7 +5,7 @@ using Terraria.ModLoader;
 using Terraria.Enums;
 using Terraria.Localization;
 
-namespace MinecraftWither.Tiles
+namespace minecraftWitherinTerraria.Tiles
 {
     public class SoulSand : ModTile
     {

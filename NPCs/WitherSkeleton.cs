@@ -7,7 +7,7 @@ using Terraria.ModLoader;
 using Terraria.Localization;
 using Terraria.Enums;
 
-namespace MinecraftWither.NPCs
+namespace minecraftWitherinTerraria.NPCs
 {
 
     public class WitherSkeleton : ModNPC

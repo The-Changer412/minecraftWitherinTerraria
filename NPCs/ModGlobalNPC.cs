@@ -7,7 +7,7 @@ using Terraria.Localization;
 using Terraria.ModLoader.IO;
 using Terraria.Enums;
 
-using MinecraftWither;
+using minecraftWitherinTerraria;
 
 namespace ExpertModePlusPlus.NPCs
 {

@@ -3,7 +3,7 @@ using Terraria.ID;
 using Terraria.Localization;
 using Terraria.ModLoader;
 
-namespace MinecraftWither.Items
+namespace minecraftWitherinTerraria.Items
 {
     public class WitherSkeletonSkull : ModItem
     {

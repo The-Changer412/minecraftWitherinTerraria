@@ -1,6 +1,6 @@
 using Terraria.ModLoader;
 
-namespace MinecraftWither
+namespace minecraftWitherinTerraria
 {
 	public class MinecraftWither : Mod
 	{
