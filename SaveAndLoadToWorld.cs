@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using Terraria;
 using Terraria.ModLoader;
 using Terraria.ModLoader.IO;
-using MinecraftWither;
+using minecraftWitherinTerraria;
 
 namespace minecraftWitherinTerraria
 {

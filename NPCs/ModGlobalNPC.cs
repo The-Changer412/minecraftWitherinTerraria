@@ -6,17 +6,16 @@ using Terraria.ModLoader;
 using Terraria.Localization;
 using Terraria.ModLoader.IO;
 using Terraria.Enums;
-
 using minecraftWitherinTerraria;
 
-namespace ExpertModePlusPlus.NPCs
+namespace minecraftWitherinTerraria.NPCs
 {
 
     class ModGlobalNPC : GlobalNPC
     {
         public override bool CheckDead(NPC npc)
         {
-          if (npc.type == NPCID.MoonLordCore && MinecraftWither.MinecraftWither.hellMessage == false)
+          if (npc.type == NPCID.MoonLordCore && minecraftWitherinTerraria.MinecraftWither.hellMessage == false)
           {
             string message = "The curse, that the moon lord has put in the underworld, has been removed.";
 
@@ -30,7 +29,7 @@ namespace ExpertModePlusPlus.NPCs
                 NetMessage.BroadcastChatMessage(NetworkText.FromLiteral(message), new Color(255, 46, 46));
             }
 
-            MinecraftWither.MinecraftWither.hellMessage = true;
+            minecraftWitherinTerraria.MinecraftWither.hellMessage = true;
           }
           return true;
         }
