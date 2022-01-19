@@ -10,39 +10,49 @@ using Terraria.Enums;
 namespace minecraftWitherinTerraria.NPCs
 {
 
-    public class WitherSkeleton : ModNPC
+    public class Wither : ModNPC
     {
 
         //create the random class
         Random rand = new Random();
 
+        //a temporary function that send a message to the chat for debugging purpose.
+        static void Talk(string message, int r=150, int g=250, int b=150) {
+
+            //check to see if the world is singleplayer or multiplayer
+            if (Main.netMode != NetmodeID.Server) {
+                Main.NewText(message, (byte)r, (byte)g, (byte)b);
+            }
+            else {
+                NetMessage.BroadcastChatMessage(NetworkText.FromLiteral(message), new Color(r, g, b));
+            }
+        }
+
         public override void SetStaticDefaults()
         {
             //set the amount of frames
-            Main.npcFrameCount[npc.type] = 10;
+            Main.npcFrameCount[npc.type] = 9;
         }
 
         //set the stats of the wither skeleton
         public override void SetDefaults()
         {
-            npc.width = 36;
-            npc.height = 67;
-            npc.lifeMax = 1200;
+            npc.width = 168;
+            npc.height = 158;
+            npc.lifeMax = 225000;
             npc.life = npc.lifeMax;
-            npc.aiStyle = 3;
-            npc.damage = 100;
-            npc.defense = 40;
-            npc.value = 2000f;
+            npc.aiStyle = -1;
+            npc.damage = 150;
+            npc.defense = 20;
+            npc.value = 20000f;
             npc.buffImmune[BuffID.OnFire] = true;
             npc.lavaImmune = true;
-            npc.knockBackResist = 0.25f;
+            npc.knockBackResist = 0f;
+            npc.boss = true;
         }
 
         public override void AI()
         {
-            //make the wither skeleton target the closest player
-            npc.TargetClosest(true);
-
             //make the wither skeleton shine light at him
             Lighting.AddLight(npc.position, 3, 3, 3);
         }
@@ -88,18 +98,6 @@ namespace minecraftWitherinTerraria.NPCs
             Gore.NewGore(npc.position, npc.velocity, mod.GetGoreSlot("Gores/WitherSkeletonGoreLeg"), 1f);
             Gore.NewGore(npc.position, npc.velocity, mod.GetGoreSlot("Gores/WitherSkeletonGoreLeg"), 1f);
             return true;
-        }
-
-        //give the wither skeleton a 50% chance to spawn after moon lord has been defeated
-        public override float SpawnChance(NPCSpawnInfo spawnInfo)
-        {
-            if (NPC.downedMoonlord)
-            {
-                return SpawnCondition.Underworld.Chance * 0.5f;
-            } else
-            {
-                return 0f;
-            }
         }
 
         //give the skull of the wither skeleton a 5% chance to drop from the wither skeleton and a 100% chance to drop the soul sand
