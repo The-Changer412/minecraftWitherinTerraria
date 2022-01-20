@@ -38,14 +38,17 @@ namespace minecraftWitherinTerraria.NPCs
         public override void SetDefaults()
         {
             npc.width = 168;
-            npc.height = 158;
-            npc.lifeMax = 225000;
+            npc.height = 156;
+            npc.lifeMax = 175000;
             npc.life = npc.lifeMax;
             npc.aiStyle = -1;
             npc.damage = 150;
-            npc.defense = 20;
+            npc.defense = 30;
             npc.value = 20000f;
             npc.buffImmune[BuffID.OnFire] = true;
+            npc.buffImmune[BuffID.Frostburn] = true;
+            npc.buffImmune[BuffID.Frozen] = true;
+            npc.buffImmune[BuffID.Chilled] = true;
             npc.lavaImmune = true;
             npc.knockBackResist = 0f;
             npc.boss = true;

@@ -62,7 +62,17 @@ namespace minecraftWitherinTerraria.Tiles
             //check if the tiles in the t shape is has the right tiles to spawn in the wither
             if ((center==ModContent.TileType<Tiles.SoulSand>()) && (left==ModContent.TileType<Tiles.SoulSand>()) && (right==ModContent.TileType<Tiles.SoulSand>()) && (bottom==ModContent.TileType<Tiles.SoulSand>()) && (topL==ModContent.TileType<Tiles.WitherSkeletonSkull>()) && (topC==ModContent.TileType<Tiles.WitherSkeletonSkull>()) && (topR==ModContent.TileType<Tiles.WitherSkeletonSkull>()))
             {
-                Talk("It's ready to spawn in the wither, if I had one to spawn in!");
+                //kill the tiles
+                WorldGen.KillTile(i, j, noItem: true);
+                WorldGen.KillTile(i-1, j, noItem: true);
+                WorldGen.KillTile(i+1, j, noItem: true);
+                WorldGen.KillTile(i, j+1, noItem: true);
+                WorldGen.KillTile(i-1, j-1, noItem: true);
+                WorldGen.KillTile(i, j-1, noItem: true);
+                WorldGen.KillTile(i+1, j-1, noItem: true);
+
+                //spawn in the wither
+                NPC.NewNPC((int) i * 16, (int) j*16, ModContent.NPCType<NPCs.Wither>());
             }
 
             return true;
