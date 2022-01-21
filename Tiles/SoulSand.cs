@@ -26,13 +26,6 @@ namespace minecraftWitherinTerraria.Tiles
             Main.tileSolid[Type] = true;
             Main.tileFrameImportant[Type] = true;
 
-            //make the soul sand detectable by splunker and metal detector
-            TileID.Sets.Ore[Type] = true;
-            Main.tileSpelunker[Type] = true;
-			Main.tileValue[Type] = 775;
-			Main.tileShine2[Type] = true;
-			Main.tileShine[Type] = 975;
-
             //make it drop it item version and color it on the map
             drop = ModContent.ItemType<Items.SoulSand>();
     		AddMapEntry(new Color(73, 55, 44));

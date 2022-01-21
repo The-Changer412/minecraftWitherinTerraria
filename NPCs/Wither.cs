@@ -13,6 +13,11 @@ namespace minecraftWitherinTerraria.NPCs
     public class Wither : ModNPC
     {
 
+        public override string Texture => "minecraftWitherinTerraria/NPCs/WitherSpawning";
+        public static bool spawning = true;
+        public static float frameTimerMax = 60*5;
+        public static float frameTimer = frameTimerMax;
+
         //create the random class
         Random rand = new Random();
 
@@ -52,12 +57,20 @@ namespace minecraftWitherinTerraria.NPCs
             npc.lavaImmune = true;
             npc.knockBackResist = 0f;
             npc.boss = true;
+
+            spawning = true;
         }
 
         public override void AI()
         {
             //make the wither skeleton shine light at him
             Lighting.AddLight(npc.position, 3, 3, 3);
+
+            if (spawning)
+            {
+                npc.damage = 0;
+                npc.dontTakeDamage = true;
+            }
         }
 
         //give the player poison when hitted
@@ -81,13 +94,18 @@ namespace minecraftWitherinTerraria.NPCs
           //set the wither skeelton sprite to face the player
             npc.spriteDirection = -npc.direction;
 
-            //iter over each frame of the wither skeleton
-            npc.frameCounter++;
-            npc.frame.Y =(int) (npc.frameCounter * frameHeight);
-            if (npc.frameCounter >= Main.npcFrameCount[npc.type])
+            frameTimer--;
+            if (frameTimer <= 0)
             {
-                npc.frameCounter = 0;
+                //iter over each frame of the wither skeleton
+                npc.frameCounter++;
                 npc.frame.Y =(int) (npc.frameCounter * frameHeight);
+                if (npc.frameCounter >= Main.npcFrameCount[npc.type])
+                {
+                    npc.frameCounter = 0;
+                    npc.frame.Y =(int) (npc.frameCounter * frameHeight);
+                    frameTimer = frameTimerMax;
+                }
             }
         }
 
