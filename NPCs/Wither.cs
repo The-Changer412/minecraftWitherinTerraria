@@ -44,8 +44,8 @@ namespace minecraftWitherinTerraria.NPCs
         //set the stats of the wither skeleton
         public override void SetDefaults()
         {
-            npc.width = 84;
-            npc.height = 78;
+            npc.width = 85;
+            npc.height = 85;
             npc.lifeMax = 175000;
             npc.life = npc.lifeMax;
             npc.aiStyle = -1;
