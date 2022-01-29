@@ -10,10 +10,10 @@ using Terraria.Enums;
 namespace minecraftWitherinTerraria.NPCs
 {
 
+    [AutoloadBossHead]
     public class Wither : ModNPC
     {
 
-        // public override string Texture => "minecraftWitherinTerraria/NPCs/WitherSpawning";
         public static string state = "spawning";
         public static float frameTimerMax = 60*5;
         public static float frameTimer = frameTimerMax;
@@ -38,19 +38,19 @@ namespace minecraftWitherinTerraria.NPCs
         public override void SetStaticDefaults()
         {
             //set the amount of frames
-            Main.npcFrameCount[npc.type] = 27;
+            Main.npcFrameCount[npc.type] = 19;
         }
 
         //set the stats of the wither skeleton
         public override void SetDefaults()
         {
-            npc.width = 85;
+            npc.width = 84;
             npc.height = 85;
-            npc.lifeMax = 175000;
+            npc.lifeMax = 150000;
             npc.life = npc.lifeMax;
             npc.aiStyle = -1;
-            npc.damage = 150;
-            npc.defense = 30;
+            npc.damage = 80;
+            npc.defense = 10;
             npc.value = 20000f;
             npc.buffImmune[BuffID.OnFire] = true;
             npc.buffImmune[BuffID.Frostburn] = true;
@@ -62,7 +62,7 @@ namespace minecraftWitherinTerraria.NPCs
 
             state = "spawning";
             frameStart = 0;
-            frameEnd = 0;
+            frameEnd = 1;
         }
 
         public override void AI()
@@ -73,19 +73,20 @@ namespace minecraftWitherinTerraria.NPCs
             if (state == "spawning")
             {
                 npc.damage = 0;
-                npc.dontTakeDamage = true;
+                // npc.dontTakeDamage = true;
+                // npc.scale = 2f;
                 frameStart = 0;
-                frameEnd = 0;
+                frameEnd = 1;
             }
             else if (state == "1st phase")
             {
-                frameStart = 10;
-                frameEnd = 18;
+                frameStart = 3;
+                frameEnd = 11;
             }
             else if (state == "2nd phase")
             {
-                frameStart = 19;
-                frameEnd = 27;
+                frameStart = 12;
+                frameEnd = 19;
             }
         }
 
@@ -109,40 +110,23 @@ namespace minecraftWitherinTerraria.NPCs
         {
           //set the wither skeelton sprite to face the player
             npc.spriteDirection = -npc.direction;
-            // Talk("change sprite");
 
-            //iter over each frame of the wither skeleton
-            npc.frameCounter++;
-            npc.frame.Y =(int) (npc.frameCounter * frameHeight);
-            if (npc.frameCounter >= Main.npcFrameCount[npc.type])
+
+            if (state != "spawning")
             {
-                npc.frameCounter = 0;
-                npc.frame.Y =(int) (npc.frameCounter * frameHeight);
+                //iter over each frame of the wither skeleton
+                npc.frameCounter++;
+                npc.frame.Y =(int) (npc.frameCounter * npc.height);
+                if (npc.frameCounter >= frameEnd)
+                {
+                    npc.frameCounter = frameStart;
+                    npc.frame.Y =(int) (npc.frameCounter * npc.height);
+                }
             }
-
-            // npc.frameCounter++;
-            // if (npc.frameCounter >= frameEnd)
-            // {
-            //     npc.frameCounter = frameStart;
-            //     npc.frame.Y =(int) (npc.frameCounter * frameHeight);
-            // }
-            //
-            // npc.frame.Y = (int) (npc.frameCounter* frameHeight);
-
-
-            // frameTimer--;
-            // if (frameTimer <= 0)
-            // {
-            //     //iter over each frame of the wither skeleton
-            //     npc.frameCounter++;
-            //     npc.frame.Y =(int) (npc.frameCounter * frameHeight);
-            //     if (npc.frameCounter >= frameEnd)
-            //     {
-            //         npc.frameCounter = frameStart;
-            //         npc.frame.Y =(int) (npc.frameCounter * frameHeight);
-            //         frameTimer = frameTimerMax;
-            //     }
-            // }
+            else
+            {
+                npc.frame.Y = 0;
+            }
         }
 
         //create the gore when the wither skeleton die
