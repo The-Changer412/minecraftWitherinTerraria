@@ -14,11 +14,13 @@ namespace minecraftWitherinTerraria.NPCs
     public class Wither : ModNPC
     {
 
-        public static string state = "spawning";
+        public static int frameStart = 0;
+        public static int frameEnd = 0;
         public static float frameTimerMax = 60*5;
         public static float frameTimer = frameTimerMax;
-        public static int frameStart = 0;
-        public static int frameEnd = 9;
+        public static string state = "spawning";
+        public static float AITimerMax = 0;
+        public static float AITimer = 0;
 
         //create the random class
         Random rand = new Random();
@@ -38,12 +40,13 @@ namespace minecraftWitherinTerraria.NPCs
         public override void SetStaticDefaults()
         {
             //set the amount of frames
-            Main.npcFrameCount[npc.type] = 19;
+            Main.npcFrameCount[npc.type] = 20;
         }
 
         //set the stats of the wither skeleton
         public override void SetDefaults()
         {
+            //set the npc stats
             npc.width = 84;
             npc.height = 85;
             npc.lifeMax = 150000;
@@ -60,9 +63,12 @@ namespace minecraftWitherinTerraria.NPCs
             npc.knockBackResist = 0f;
             npc.boss = true;
 
+            //reset the wither variables
             state = "spawning";
             frameStart = 0;
             frameEnd = 1;
+            AITimerMax = 60;
+            AITimer = AITimerMax;
         }
 
         public override void AI()
@@ -70,23 +76,63 @@ namespace minecraftWitherinTerraria.NPCs
             //make the wither skeleton shine light at him
             Lighting.AddLight(npc.position, 3, 3, 3);
 
+            //check what state the wither is in
             if (state == "spawning")
             {
+                //set the stats for the spawning state
                 npc.damage = 0;
-                // npc.dontTakeDamage = true;
-                // npc.scale = 2f;
+                npc.dontTakeDamage = true;
                 frameStart = 0;
                 frameEnd = 1;
+                npc.frameCounter = frameStart;
+
+                //slowly grow the wither and tick down the AI timer
+                npc.scale += 0.001f;
+                AITimer -= 1;
+                Talk(AITimer.ToString());
+
+                //switch between the normal sprite and the blue sprite
+                if (AITimer <= 0)
+                {
+                    if (npc.frameCounter == frameStart)
+                    {
+                        npc.frameCounter = frameEnd;
+                    }
+                    if (npc.frameCounter == frameEnd)
+                    {
+                        npc.frameCounter = frameStart;
+                    }
+                    AITimer = AITimerMax;
+                }
+
+                //when the wither hits a certian state, then switch the state to 1st phase
+                if (npc.scale >= 1.25f)
+                {
+                    npc.scale = 1.25f;
+                    state = "1st phase";
+                }
             }
             else if (state == "1st phase")
             {
-                frameStart = 3;
+                //set the stats for the 1st phase
+                frameStart = 2;
                 frameEnd = 11;
+                npc.dontTakeDamage = false;
+                npc.damage = 80;
+
+                //make the wither target the closest player
+                npc.TargetClosest(true);
             }
             else if (state == "2nd phase")
             {
+                //set the stats for the 2nd phase
                 frameStart = 12;
-                frameEnd = 19;
+                frameEnd = 20;
+                npc.dontTakeDamage = false;
+                npc.damage = 80;
+
+                //make the wither target the closest player
+                npc.TargetClosest(true);
             }
         }
 
@@ -105,16 +151,17 @@ namespace minecraftWitherinTerraria.NPCs
         }
 
 
-        //animate the wither skeleton
+        //animate the wither
         public override void FindFrame(int frameHeight)
         {
-          //set the wither skeelton sprite to face the player
+          //set the wither sprite to face the player
             npc.spriteDirection = -npc.direction;
 
 
+            //animate him normaly if the wither is not in the spawning state
             if (state != "spawning")
             {
-                //iter over each frame of the wither skeleton
+                //iter over each frame of the wither
                 npc.frameCounter++;
                 npc.frame.Y =(int) (npc.frameCounter * npc.height);
                 if (npc.frameCounter >= frameEnd)
@@ -125,7 +172,7 @@ namespace minecraftWitherinTerraria.NPCs
             }
             else
             {
-                npc.frame.Y = 0;
+                npc.frame.Y =(int) (npc.frameCounter * npc.height);
             }
         }
 
