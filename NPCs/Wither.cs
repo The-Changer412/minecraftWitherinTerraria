@@ -21,11 +21,12 @@ namespace minecraftWitherinTerraria.NPCs
         public static string state = "spawning";
         public static float AITimerMax = 0;
         public static float AITimer = 0;
+        public static int frameState = 0;
 
         //create the random class
         Random rand = new Random();
 
-        //a temporary function that send a message to the chat for debugging purpose.
+        //a frameStateorary function that send a message to the chat for debugging purpose.
         static void Talk(string message, int r=150, int g=250, int b=150) {
 
             //check to see if the world is singleplayer or multiplayer
@@ -61,13 +62,15 @@ namespace minecraftWitherinTerraria.NPCs
             npc.buffImmune[BuffID.Chilled] = true;
             npc.lavaImmune = true;
             npc.knockBackResist = 0f;
+            npc.noGravity = true;
+            npc.noTileCollide;
             npc.boss = true;
 
             //reset the wither variables
             state = "spawning";
             frameStart = 0;
             frameEnd = 1;
-            AITimerMax = 60;
+            AITimerMax = 50;
             AITimer = AITimerMax;
         }
 
@@ -89,20 +92,29 @@ namespace minecraftWitherinTerraria.NPCs
                 //slowly grow the wither and tick down the AI timer
                 npc.scale += 0.001f;
                 AITimer -= 1;
-                Talk(AITimer.ToString());
 
-                //switch between the normal sprite and the blue sprite
+                //switch between the normal sprite and the blue sprite and speed it up
                 if (AITimer <= 0)
                 {
-                    if (npc.frameCounter == frameStart)
+                    //alter between the frames
+                    if (frameState == frameStart)
                     {
-                        npc.frameCounter = frameEnd;
+                        frameState = frameEnd;
                     }
-                    if (npc.frameCounter == frameEnd)
+                    else
                     {
-                        npc.frameCounter = frameStart;
+                        frameState = frameStart;
                     }
+
+                    //slowly decrease the timer
                     AITimer = AITimerMax;
+                    if (AITimerMax <= 8f)
+                    {
+                        AITimerMax = 8f;
+                    } else
+                    {
+                        AITimerMax -= 8f;
+                    }
                 }
 
                 //when the wither hits a certian state, then switch the state to 1st phase
@@ -172,7 +184,7 @@ namespace minecraftWitherinTerraria.NPCs
             }
             else
             {
-                npc.frame.Y =(int) (npc.frameCounter * npc.height);
+                npc.frame.Y =(int) (frameState * npc.height);
             }
         }
 
