@@ -63,7 +63,7 @@ namespace minecraftWitherinTerraria.NPCs
             npc.lavaImmune = true;
             npc.knockBackResist = 0f;
             npc.noGravity = true;
-            npc.noTileCollide;
+            npc.noTileCollide = true;
             npc.boss = true;
 
             //reset the wither variables
@@ -132,8 +132,16 @@ namespace minecraftWitherinTerraria.NPCs
                 npc.dontTakeDamage = false;
                 npc.damage = 80;
 
+                //set the variables for the 1st phase
+                float moveSpd = 0.0175f;
+                float hoverDis = 248;
+
                 //make the wither target the closest player
                 npc.TargetClosest(true);
+
+                //make the wither hover near the player
+                npc.position.X = MathHelper.Lerp(npc.position.X, Main.player[npc.target].position.X - (hoverDis*npc.direction), moveSpd);
+                npc.position.Y = MathHelper.Lerp(npc.position.Y, Main.player[npc.target].position.Y - hoverDis, moveSpd);
             }
             else if (state == "2nd phase")
             {
