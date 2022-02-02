@@ -52,11 +52,9 @@ namespace minecraftWitherinTerraria.NPCs
         {
           if (Main.expertMode == true)
           {
-            // target.AddBuff(BuffID.Poisoned, 900);
             target.AddBuff(mod.BuffType("WitherDebuff"), 900);
           } else
           {
-            // target.AddBuff(BuffID.Poisoned, 600);
             target.AddBuff(mod.BuffType("WitherDebuff"), 600);
           }
         }

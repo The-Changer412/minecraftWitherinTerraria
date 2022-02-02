@@ -18,10 +18,12 @@ namespace minecraftWitherinTerraria.NPCs
         public static int frameEnd = 0;
         public static float frameTimerMax = 60*5;
         public static float frameTimer = frameTimerMax;
+        public static int frameState = 0;
         public static string state = "spawning";
+        public static string phase = "move";
         public static float AITimerMax = 0;
         public static float AITimer = 0;
-        public static int frameState = 0;
+        public static int AICounter = 0;
 
         //create the random class
         Random rand = new Random();
@@ -72,6 +74,7 @@ namespace minecraftWitherinTerraria.NPCs
             frameEnd = 1;
             AITimerMax = 50;
             AITimer = AITimerMax;
+            AICounter = 0;
         }
 
         public override void AI()
@@ -88,6 +91,12 @@ namespace minecraftWitherinTerraria.NPCs
                 frameStart = 0;
                 frameEnd = 1;
                 npc.frameCounter = frameStart;
+
+                if (AICounter == 0)
+                {
+                    npc.position.Y += 32;
+                    AICounter++;
+                }
 
                 //slowly grow the wither and tick down the AI timer
                 npc.scale += 0.001f;
@@ -122,38 +131,88 @@ namespace minecraftWitherinTerraria.NPCs
                 {
                     npc.scale = 1.25f;
                     state = "1st phase";
+                    AICounter = 0;
                 }
             }
             else if (state == "1st phase")
             {
                 //set the stats for the 1st phase
-                frameStart = 2;
-                frameEnd = 11;
                 npc.dontTakeDamage = false;
                 npc.damage = 80;
 
-                //set the variables for the 1st phase
-                float moveSpd = 0.0175f;
-                float hoverDis = 248;
+                frameStart = 2;
+                frameEnd = 11;
 
-                //make the wither target the closest player
-                npc.TargetClosest(true);
-
-                //make the wither hover near the player
-                npc.position.X = MathHelper.Lerp(npc.position.X, Main.player[npc.target].position.X - (hoverDis*npc.direction), moveSpd);
-                npc.position.Y = MathHelper.Lerp(npc.position.Y, Main.player[npc.target].position.Y - hoverDis, moveSpd);
+                //make the wither attack
+                AttackAI();
             }
             else if (state == "2nd phase")
             {
                 //set the stats for the 2nd phase
-                frameStart = 12;
-                frameEnd = 20;
                 npc.dontTakeDamage = false;
                 npc.damage = 80;
 
-                //make the wither target the closest player
-                npc.TargetClosest(true);
+                frameStart = 12;
+                frameEnd = 20;
+
+                //make the wither attack
+                AttackAI();
             }
+
+            //switch to 2nd phase at half hp
+            if (npc.life <= npc.lifeMax / 2 && state != "2nd phase")
+            {
+                state = "2nd phase";
+            }
+        }
+
+        //the ai for the wither to attack
+        public void AttackAI()
+        {
+            //set the variables for the 1st phase
+            float moveSpd = 0.0175f;
+            float hoverDis = 248;
+
+            //make the wither target the closest player
+            npc.TargetClosest(true);
+
+            if (phase == "move")
+            {
+                AITimerMax = 50f;
+                //make the wither hover near the player
+                npc.position.X = MathHelper.Lerp(npc.position.X, Main.player[npc.target].position.X - (hoverDis*npc.direction), moveSpd);
+                npc.position.Y = MathHelper.Lerp(npc.position.Y, Main.player[npc.target].position.Y - hoverDis, moveSpd);
+
+                //make the wither shoot his's head
+                if (AITimer < 0)
+                {
+                    float spd = 2.5f;
+                    Projectile.NewProjectile(npc.position.X, npc.position.Y, (Main.player[npc.target].position.X - npc.position.X) * spd, (Main.player[npc.target].position.Y - npc.position.Y) * spd, ModContent.ProjectileType<Projectiles.WitherHeadProjectile>(), (int)(npc.damage*.20f), 0f, Main.myPlayer, npc.whoAmI, Main.rand.Next());
+                    AITimer = AITimerMax;
+                    AICounter++;
+                }
+
+                //if he shoot's 5 head, then he will switch phase
+                if (AICounter == 5)
+                {
+                    phase = "circle attack";
+                    AICounter = 0;
+                }
+            } else if (phase == "circle attack")
+            {
+                AITimerMax = 10f;
+
+                //make the wither shoot his's head
+                if (AITimer < 0)
+                {
+                    float spd = 2.5f;
+                    Projectile.NewProjectile(npc.position.X, npc.position.Y, (Main.player[npc.target].position.X - npc.position.X) * spd, (Main.player[npc.target].position.Y - npc.position.Y) * spd, ModContent.ProjectileType<Projectiles.WitherHeadProjectile>(), (int)(npc.damage*.20f), 0f, Main.myPlayer, npc.whoAmI, Main.rand.Next());
+                    AITimer = AITimerMax;
+                    AICounter++;
+                }
+            }
+
+            AITimer--;
         }
 
         //give the player poison when hitted
@@ -161,11 +220,9 @@ namespace minecraftWitherinTerraria.NPCs
         {
           if (Main.expertMode == true)
           {
-            // target.AddBuff(BuffID.Poisoned, 900);
             target.AddBuff(mod.BuffType("WitherDebuff"), 900);
           } else
           {
-            // target.AddBuff(BuffID.Poisoned, 600);
             target.AddBuff(mod.BuffType("WitherDebuff"), 600);
           }
         }
