@@ -25,9 +25,6 @@ namespace minecraftWitherinTerraria.NPCs
         public static float AITimer = 0;
         public static int AICounter = 0;
 
-        //create the random class
-        Random rand = new Random();
-
         //a frameStateorary function that send a message to the chat for debugging purpose.
         static void Talk(string message, int r=150, int g=250, int b=150) {
 
@@ -166,6 +163,15 @@ namespace minecraftWitherinTerraria.NPCs
             }
         }
 
+        //the function that will randomly pick the next phase
+        public void NextState()
+        {
+            string[] options = new string[] {"move", "rapid shoot"};
+            phase = options[Main.rand.Next(0, options.Length)];
+            Talk(phase);
+            AICounter = 0;
+        }
+
         //the ai for the wither to attack
         public void AttackAI()
         {
@@ -189,11 +195,35 @@ namespace minecraftWitherinTerraria.NPCs
                     float spd = 2.5f;
                     Projectile.NewProjectile(npc.position.X, npc.position.Y, (Main.player[npc.target].position.X - npc.position.X) * spd, (Main.player[npc.target].position.Y - npc.position.Y) * spd, ModContent.ProjectileType<Projectiles.WitherHeadProjectile>(), (int)(npc.damage*.20f), 0f, Main.myPlayer, npc.whoAmI, Main.rand.Next());
                     AITimer = AITimerMax;
+                    AICounter++;
+                }
+
+                if (AICounter == 5)
+                {
+                    NextState();
+                }
+            } else if (phase == "rapid shoot")
+            {
+                AITimerMax = 20f;
+
+                //make the wither shoot his's head
+                if (AITimer < 0)
+                {
+                    float spd = 6f;
+                    Projectile.NewProjectile(npc.position.X, npc.position.Y, (Main.player[npc.target].position.X - npc.position.X) * spd, (Main.player[npc.target].position.Y - npc.position.Y) * spd, ModContent.ProjectileType<Projectiles.WitherHeadProjectile>(), (int)(npc.damage*.20f), 0f, Main.myPlayer, npc.whoAmI, Main.rand.Next());
+                    AITimer = AITimerMax;
+                    AICounter++;
+                }
+
+                if (AICounter == 3)
+                {
+                    NextState();
                 }
             }
 
             AITimer--;
         }
+
 
         //give the player poison when hitted
         public override void OnHitPlayer (Player target, int damage, bool crit)
@@ -248,7 +278,7 @@ namespace minecraftWitherinTerraria.NPCs
         //give the skull of the wither skeleton a 5% chance to drop from the wither skeleton and a 100% chance to drop the soul sand
         public override void NPCLoot()
         {
-            if (rand.Next(0, 101) <= 5)
+            if (Main.rand.Next(0, 101) <= 5)
             {
                 Item.NewItem(npc.getRect(), ModContent.ItemType<Items.WitherSkeletonSkull>(), 1);
             }
