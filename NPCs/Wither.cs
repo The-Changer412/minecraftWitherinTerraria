@@ -189,26 +189,6 @@ namespace minecraftWitherinTerraria.NPCs
                     float spd = 2.5f;
                     Projectile.NewProjectile(npc.position.X, npc.position.Y, (Main.player[npc.target].position.X - npc.position.X) * spd, (Main.player[npc.target].position.Y - npc.position.Y) * spd, ModContent.ProjectileType<Projectiles.WitherHeadProjectile>(), (int)(npc.damage*.20f), 0f, Main.myPlayer, npc.whoAmI, Main.rand.Next());
                     AITimer = AITimerMax;
-                    AICounter++;
-                }
-
-                //if he shoot's 5 head, then he will switch phase
-                if (AICounter == 5)
-                {
-                    phase = "circle attack";
-                    AICounter = 0;
-                }
-            } else if (phase == "circle attack")
-            {
-                AITimerMax = 10f;
-
-                //make the wither shoot his's head
-                if (AITimer < 0)
-                {
-                    float spd = 2.5f;
-                    Projectile.NewProjectile(npc.position.X, npc.position.Y, (Main.player[npc.target].position.X - npc.position.X) * spd, (Main.player[npc.target].position.Y - npc.position.Y) * spd, ModContent.ProjectileType<Projectiles.WitherHeadProjectile>(), (int)(npc.damage*.20f), 0f, Main.myPlayer, npc.whoAmI, Main.rand.Next());
-                    AITimer = AITimerMax;
-                    AICounter++;
                 }
             }
 
