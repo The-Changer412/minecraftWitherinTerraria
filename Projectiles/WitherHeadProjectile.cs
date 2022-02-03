@@ -33,9 +33,9 @@ namespace minecraftWitherinTerraria.Projectiles
 		//set the stats for the projectile
 		public override void SetDefaults()
 		{
+			projectile.aiStyle = 1;
 			projectile.width = 24;
             projectile.height = 24;
-            projectile.aiStyle = 1;
             projectile.hostile = true;
             projectile.ignoreWater = true;
             projectile.noDropItem = true;

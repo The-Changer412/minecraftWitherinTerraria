@@ -67,6 +67,7 @@ namespace minecraftWitherinTerraria.NPCs
 
             //reset the wither variables
             state = "spawning";
+            phase = "circle shoot";
             frameStart = 0;
             frameEnd = 1;
             AITimerMax = 50;
@@ -166,7 +167,7 @@ namespace minecraftWitherinTerraria.NPCs
         //the function that will randomly pick the next phase
         public void NextState()
         {
-            string[] options = new string[] {"move", "rapid shoot"};
+            string[] options = new string[] {"move", "rapid shoot", "circle shoot"};
             phase = options[Main.rand.Next(0, options.Length)];
             Talk(phase);
             AICounter = 0;
@@ -216,6 +217,36 @@ namespace minecraftWitherinTerraria.NPCs
                 }
 
                 if (AICounter == 3)
+                {
+                    NextState();
+                }
+            } else if (phase == "circle shoot")
+            {
+                AITimerMax = 80f;
+
+                //get the direction to shoot the projectile
+                Vector2 dir = new Vector2(0, 0);
+                if (AICounter != 0)
+                {
+                    double rad = (Math.PI / 180) * (AICounter*36);
+                    dir = new Vector2((float)Math.Cos(rad), (float)Math.Sin(rad));
+                } else
+                {
+                    dir = new Vector2(1, 0);
+                }
+
+                //make the wither shoot his's head
+                if (AITimer < 0)
+                {
+                    AITimerMax = 30;
+                    float spd = 12f;
+                    dir*=spd;
+                    Projectile.NewProjectile(npc.position.X, npc.position.Y, dir.X, dir.Y, ModContent.ProjectileType<Projectiles.WitherHeadProjectile>(), (int)(npc.damage*.20f), 0f, Main.myPlayer, npc.whoAmI, Main.rand.Next());
+                    AITimer = AITimerMax;
+                    AICounter++;
+                }
+
+                if (AICounter == 10)
                 {
                     NextState();
                 }
