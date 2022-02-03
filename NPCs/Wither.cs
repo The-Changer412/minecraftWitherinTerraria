@@ -67,7 +67,7 @@ namespace minecraftWitherinTerraria.NPCs
 
             //reset the wither variables
             state = "spawning";
-            phase = "circle shoot";
+            phase = "move";
             frameStart = 0;
             frameEnd = 1;
             AITimerMax = 50;
@@ -167,7 +167,7 @@ namespace minecraftWitherinTerraria.NPCs
         //the function that will randomly pick the next phase
         public void NextState()
         {
-            string[] options = new string[] {"move", "rapid shoot", "circle shoot"};
+            string[] options = new string[] {"move", "rapid shoot", "circle shoot", "opposite dir"};
             phase = options[Main.rand.Next(0, options.Length)];
             Talk(phase);
             AICounter = 0;
@@ -247,6 +247,26 @@ namespace minecraftWitherinTerraria.NPCs
                 }
 
                 if (AICounter == 10)
+                {
+                    NextState();
+                }
+            } else if (phase == "opposite dir")
+            {
+                AITimerMax = 50f;
+                //make the wither hover infront of the player
+                npc.position.X = MathHelper.Lerp(npc.position.X, Main.player[npc.target].position.X - (hoverDis*-Main.player[npc.target].direction), moveSpd);
+                npc.position.Y = MathHelper.Lerp(npc.position.Y, Main.player[npc.target].position.Y - hoverDis, moveSpd);
+
+                //make the wither shoot his's head
+                if (AITimer < 0)
+                {
+                    float spd = 2.5f;
+                    Projectile.NewProjectile(npc.position.X, npc.position.Y, (Main.player[npc.target].position.X - npc.position.X) * spd, (Main.player[npc.target].position.Y - npc.position.Y) * spd, ModContent.ProjectileType<Projectiles.WitherHeadProjectile>(), (int)(npc.damage*.20f), 0f, Main.myPlayer, npc.whoAmI, Main.rand.Next());
+                    AITimer = AITimerMax;
+                    AICounter++;
+                }
+
+                if (AICounter == 5)
                 {
                     NextState();
                 }
