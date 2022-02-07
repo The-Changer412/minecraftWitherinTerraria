@@ -75,8 +75,13 @@ namespace minecraftWitherinTerraria.NPCs
             AICounter = 0;
         }
 
+        //set the ai for the wither
         public override void AI()
         {
+            //tell the player the wither who am i and the state the wither is
+            player.WitherWhoAmI = npc.whoAmI;
+            player.state = state;
+
             //make the wither skeleton shine light at him
             Lighting.AddLight(npc.position, 3, 3, 3);
 
@@ -100,7 +105,7 @@ namespace minecraftWitherinTerraria.NPCs
                 npc.scale += 0.001f;
                 AITimer -= 1;
 
-                //switch between the normal sprite and the blue sprite and speed it up
+                //switch between tplayerhe normal sprite and the blue sprite and speed it up
                 if (AITimer <= 0)
                 {
                     //alter between the frames
@@ -128,8 +133,7 @@ namespace minecraftWitherinTerraria.NPCs
                 if (npc.scale >= 1.25f)
                 {
                     npc.scale = 1.25f;
-                    // state = "1st phase";
-                    state = "2nd phase";
+                    state = "1st phase";
                     AICounter = 0;
                 }
             }
@@ -153,11 +157,7 @@ namespace minecraftWitherinTerraria.NPCs
 
                 frameStart = 12;
                 frameEnd = 20;
-
-                for (int i = 0; i<Main.player.Length; i++)
-                {
-                    Main.player[i].AddBuff(mod.BuffType("FarFromWitherDebuff"), 1);
-                }
+                // Main.player[i].AddBuff(ModContent.BuffType<Buffs.FarFromWitherDebuff>(), 1000);
 
                 //make the wither attack
                 AttackAI();
@@ -228,7 +228,7 @@ namespace minecraftWitherinTerraria.NPCs
                 }
             } else if (phase == "circle shoot")
             {
-                AITimerMax = 80f;
+                AITimerMax = 30f;
 
                 //get the direction to shoot the projectile
                 Vector2 dir = new Vector2(0, 0);
@@ -245,7 +245,7 @@ namespace minecraftWitherinTerraria.NPCs
                 if (AITimer < 0)
                 {
                     AITimerMax = 30;
-                    float spd = 12f;
+                    float spd = 16f;
                     dir*=spd;
                     Projectile.NewProjectile(npc.position.X, npc.position.Y, dir.X, dir.Y, ModContent.ProjectileType<Projectiles.WitherHeadProjectile>(), (int)(npc.damage*.20f), 0f, Main.myPlayer, npc.whoAmI, Main.rand.Next());
                     AITimer = AITimerMax;
@@ -282,7 +282,7 @@ namespace minecraftWitherinTerraria.NPCs
         }
 
 
-        //give the player poison when hitted
+        //give the player the wither effect when touch by the wither
         public override void OnHitPlayer (Player target, int damage, bool crit)
         {
           if (Main.expertMode == true)
@@ -329,6 +329,7 @@ namespace minecraftWitherinTerraria.NPCs
             Gore.NewGore(npc.position, npc.velocity, mod.GetGoreSlot("Gores/WitherSkeletonGoreArm"), 1f);
             Gore.NewGore(npc.position, npc.velocity, mod.GetGoreSlot("Gores/WitherSkeletonGoreLeg"), 1f);
             Gore.NewGore(npc.position, npc.velocity, mod.GetGoreSlot("Gores/WitherSkeletonGoreLeg"), 1f);
+            player.WitherWhoAmI = 0;
             Talk("The Wither has been defeated!", 143, 61, 209);
             return true;
         }

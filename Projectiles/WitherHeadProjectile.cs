@@ -53,7 +53,7 @@ namespace minecraftWitherinTerraria.Projectiles
             }
         }
 
-        //make it that the player will get the wither debuff
+        //make it that the player will get the wither debuff on hit
         public override void OnHitPlayer (Player target, int damage, bool crit)
         {
             if (Main.expertMode == true)
