@@ -25,7 +25,7 @@ namespace minecraftWitherinTerraria.NPCs
         public static float AITimer = 0;
         public static int AICounter = 0;
 
-        //a frameStateorary function that send a message to the chat for debugging purpose.
+        //a temporary function that send a message to the chat for debugging purpose.
         static void Talk(string message, int r=150, int g=250, int b=150) {
 
             //check to see if the world is singleplayer or multiplayer
@@ -128,7 +128,8 @@ namespace minecraftWitherinTerraria.NPCs
                 if (npc.scale >= 1.25f)
                 {
                     npc.scale = 1.25f;
-                    state = "1st phase";
+                    // state = "1st phase";
+                    state = "2nd phase";
                     AICounter = 0;
                 }
             }
@@ -136,7 +137,7 @@ namespace minecraftWitherinTerraria.NPCs
             {
                 //set the stats for the 1st phase
                 npc.dontTakeDamage = false;
-                npc.damage = 80;
+                npc.damage = 50;
 
                 frameStart = 2;
                 frameEnd = 11;
@@ -153,6 +154,11 @@ namespace minecraftWitherinTerraria.NPCs
                 frameStart = 12;
                 frameEnd = 20;
 
+                for (int i = 0; i<Main.player.Length; i++)
+                {
+                    Main.player[i].AddBuff(mod.BuffType("FarFromWitherDebuff"), 1);
+                }
+
                 //make the wither attack
                 AttackAI();
             }
@@ -168,7 +174,7 @@ namespace minecraftWitherinTerraria.NPCs
         public void NextState()
         {
             string[] options = new string[] {"move", "rapid shoot", "circle shoot", "opposite dir"};
-            phase = options[Main.rand.Next(0, options.Length)];
+            // phase = options[Main.rand.Next(0, options.Length)];
             Talk(phase);
             AICounter = 0;
         }
@@ -323,6 +329,7 @@ namespace minecraftWitherinTerraria.NPCs
             Gore.NewGore(npc.position, npc.velocity, mod.GetGoreSlot("Gores/WitherSkeletonGoreArm"), 1f);
             Gore.NewGore(npc.position, npc.velocity, mod.GetGoreSlot("Gores/WitherSkeletonGoreLeg"), 1f);
             Gore.NewGore(npc.position, npc.velocity, mod.GetGoreSlot("Gores/WitherSkeletonGoreLeg"), 1f);
+            Talk("The Wither has been defeated!", 143, 61, 209);
             return true;
         }
 

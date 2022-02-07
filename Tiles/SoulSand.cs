@@ -66,6 +66,7 @@ namespace minecraftWitherinTerraria.Tiles
 
                 //spawn in the wither
                 NPC.NewNPC((int) i * 16, (int) j*16, ModContent.NPCType<NPCs.Wither>());
+                Talk("The Wither has awoken!", 143, 61, 209);
             }
 
             return true;
