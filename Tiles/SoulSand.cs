@@ -40,9 +40,6 @@ namespace minecraftWitherinTerraria.Tiles
         //check if the soul sand is placed in a T shape with wither skeleton skulls on it when a tile is placed down or a tile is near it
         public override bool TileFrame (int i, int j, ref bool resetFrame, ref bool noBreak)
         {
-            //soul sand id : 472
-            //wither skeleton skull id: 473
-
             //get all of the tiles in a T shape
             int center = Main.tile[i, j].type;
             int left = Main.tile[i-1, j].type;

@@ -49,7 +49,7 @@ namespace minecraftWitherinTerraria.NPCs
             //set the npc stats
             npc.width = 84;
             npc.height = 85;
-            npc.lifeMax = 150000;
+            npc.lifeMax = 100;
             npc.life = npc.lifeMax;
             npc.aiStyle = -1;
             npc.damage = 80;
@@ -339,7 +339,7 @@ namespace minecraftWitherinTerraria.NPCs
         //give the skull of the wither skeleton a 5% chance to drop from the wither skeleton and a 100% chance to drop the soul sand
         public override void NPCLoot()
         {
-            Item.NewItem(npc.getRect(), ModContent.ItemType<Items.SoulSand>(), 1);
+            Item.NewItem(npc.getRect(), ModContent.ItemType<Items.NetherStar>(), 1);
         }
     }
 }
