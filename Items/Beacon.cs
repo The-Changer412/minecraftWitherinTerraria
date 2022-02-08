@@ -10,7 +10,7 @@ namespace minecraftWitherinTerraria.Items
         public override void SetStaticDefaults()
         {
             //set the text when hovering over the item
-            Tooltip.SetDefault("The block that gives power to all nearby users. Needs prehardmore bars to power it.");
+            Tooltip.SetDefault("The block that gives power to all nearby users. Needs any bars to power it.");
         }
 
         //set the stats of the item

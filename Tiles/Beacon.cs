@@ -35,6 +35,13 @@ namespace minecraftWitherinTerraria.Tiles
         public override bool TileFrame (int i, int j, ref bool resetFrame, ref bool noBreak)
         {
 
+
+            //239 is the tile id for all bars
+            if (Main.tile[i, j+1].type == 239)
+            {
+                Talk("awdwadwad");
+            }
+
             // //get all of the tiles in a T shape
             // int center = Main.tile[i, j].type;
             // int left = Main.tile[i-1, j].type;
