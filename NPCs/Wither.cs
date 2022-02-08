@@ -40,7 +40,7 @@ namespace minecraftWitherinTerraria.NPCs
         public override void SetStaticDefaults()
         {
             //set the amount of frames
-            Main.npcFrameCount[npc.type] = 20;
+            Main.npcFrameCount[npc.type] = 21;
         }
 
         //set the stats of the wither skeleton
@@ -142,6 +142,7 @@ namespace minecraftWitherinTerraria.NPCs
                 //set the stats for the 1st phase
                 npc.dontTakeDamage = false;
                 npc.damage = 50;
+                npc.defense = 10;
 
                 frameStart = 2;
                 frameEnd = 11;
@@ -154,9 +155,10 @@ namespace minecraftWitherinTerraria.NPCs
                 //set the stats for the 2nd phase
                 npc.dontTakeDamage = false;
                 npc.damage = 80;
+                npc.defense = 20;
 
                 frameStart = 12;
-                frameEnd = 20;
+                frameEnd = Main.npcFrameCount[npc.type];
                 // Main.player[i].AddBuff(ModContent.BuffType<Buffs.FarFromWitherDebuff>(), 1000);
 
                 //make the wither attack
@@ -320,15 +322,15 @@ namespace minecraftWitherinTerraria.NPCs
             }
         }
 
-        //create the gore when the wither skeleton die
+        //create the gore when the wither die
         public override bool CheckDead()
         {
-            Gore.NewGore(npc.position, npc.velocity, mod.GetGoreSlot("Gores/WitherSkeletonGoreHead"), 1f);
-            Gore.NewGore(npc.position, npc.velocity, mod.GetGoreSlot("Gores/WitherSkeletonGoreBody"), 1f);
-            Gore.NewGore(npc.position, npc.velocity, mod.GetGoreSlot("Gores/WitherSkeletonGoreArm"), 1f);
-            Gore.NewGore(npc.position, npc.velocity, mod.GetGoreSlot("Gores/WitherSkeletonGoreArm"), 1f);
-            Gore.NewGore(npc.position, npc.velocity, mod.GetGoreSlot("Gores/WitherSkeletonGoreLeg"), 1f);
-            Gore.NewGore(npc.position, npc.velocity, mod.GetGoreSlot("Gores/WitherSkeletonGoreLeg"), 1f);
+            Gore.NewGore(npc.position, npc.velocity, mod.GetGoreSlot("Gores/WitherGoreHead"), 1f);
+            Gore.NewGore(npc.position, npc.velocity, mod.GetGoreSlot("Gores/WitherGoreHead"), 1f);
+            Gore.NewGore(npc.position, npc.velocity, mod.GetGoreSlot("Gores/WitherGoreHead"), 1f);
+            Gore.NewGore(npc.position, npc.velocity, mod.GetGoreSlot("Gores/WitherGoreNeck"), 1f);
+            Gore.NewGore(npc.position, npc.velocity, mod.GetGoreSlot("Gores/WitherGoreBody"), 1f);
+            Gore.NewGore(npc.position, npc.velocity, mod.GetGoreSlot("Gores/WitherGoreTail"), 1f);
             player.WitherWhoAmI = 0;
             Talk("The Wither has been defeated!", 143, 61, 209);
             return true;
@@ -337,10 +339,6 @@ namespace minecraftWitherinTerraria.NPCs
         //give the skull of the wither skeleton a 5% chance to drop from the wither skeleton and a 100% chance to drop the soul sand
         public override void NPCLoot()
         {
-            if (Main.rand.Next(0, 101) <= 5)
-            {
-                Item.NewItem(npc.getRect(), ModContent.ItemType<Items.WitherSkeletonSkull>(), 1);
-            }
             Item.NewItem(npc.getRect(), ModContent.ItemType<Items.SoulSand>(), 1);
         }
     }

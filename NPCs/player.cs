@@ -10,19 +10,9 @@ namespace minecraftWitherinTerraria.NPCs
 {
     public class player : ModPlayer
     {
+        //set the stats
         public static int WitherWhoAmI = 0;
         public static string state = "null";
-        //a temporary function that send a message to the chat for debugging purpose.
-        static void Talk(string message, int r=150, int g=250, int b=150) {
-
-            //check to see if the world is singleplayer or multiplayer
-            if (Main.netMode != NetmodeID.Server) {
-                Main.NewText(message, (byte)r, (byte)g, (byte)b);
-            }
-            else {
-                NetMessage.BroadcastChatMessage(NetworkText.FromLiteral(message), new Color(r, g, b));
-            }
-        }
 
         //make the player will get the far from wither debuff if they are more then 500 pixels away
         public override void PostUpdate()
@@ -50,6 +40,7 @@ namespace minecraftWitherinTerraria.NPCs
             }
         }
 
+        //make the player not able to do damage to the wither with the far from wither debuff
         public override bool? CanHitNPC(Item item, NPC target)
         {
             if (WitherWhoAmI != 0)
@@ -58,19 +49,18 @@ namespace minecraftWitherinTerraria.NPCs
                 {
                     for (int i=0; i<player.buffType.Length; i++)
                     {
-                        //check if the player has the honey buff
+                        //check if the player has the far from wither debuff
                         if (player.buffType[i] == ModContent.BuffType<Buffs.FarFromWitherDebuff>())
                         {
-                            Talk("I can't hit it.");
                             return false;
                         }
                     }
                 }
             }
-            Talk("Maybe I can hit it?");
             return null;
         }
 
+        //make the player not able to do damage to the wither with the far from wither debuff
         public override bool? CanHitNPCWithProj(Projectile proj, NPC target)
         {
             if (WitherWhoAmI != 0)
@@ -79,16 +69,14 @@ namespace minecraftWitherinTerraria.NPCs
                 {
                     for (int i=0; i<player.buffType.Length; i++)
                     {
-                        //check if the player has the honey buff
+                        //check if the player has the far from wither debuff
                         if (player.buffType[i] == ModContent.BuffType<Buffs.FarFromWitherDebuff>())
                         {
-                            Talk("I can't hit it.");
                             return false;
                         }
                     }
                 }
             }
-            Talk("Maybe I can hit it?");
             return null;
         }
     }
