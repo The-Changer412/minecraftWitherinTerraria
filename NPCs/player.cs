@@ -13,10 +13,12 @@ namespace minecraftWitherinTerraria.NPCs
         //set the stats
         public static int WitherWhoAmI = 0;
         public static string state = "null";
+        public static bool NearBeacon = false;
 
-        //make the player will get the far from wither debuff if they are more then 500 pixels away
+        //run some code after the update
         public override void PostUpdate()
         {
+            //make the player will get the far from wither debuff if they are more then 500 pixels away
             if (WitherWhoAmI != 0)
             {
                 if (state == "2nd phase")
@@ -37,6 +39,16 @@ namespace minecraftWitherinTerraria.NPCs
                     }
 
                 }
+            }
+            if (NearBeacon)
+            {
+                player.AddBuff(BuffID.Regeneration, 1);
+                player.AddBuff(BuffID.Swiftness, 1);
+                player.AddBuff(BuffID.Ironskin, 1);
+                player.AddBuff(BuffID.Mining, 1);
+                player.AddBuff(BuffID.Shine, 1);
+                player.AddBuff(BuffID.NightOwl, 1);
+                player.AddBuff(BuffID.Calm, 1);
             }
         }
 

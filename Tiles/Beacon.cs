@@ -4,11 +4,15 @@ using Terraria.ID;
 using Terraria.ModLoader;
 using Terraria.Enums;
 using Terraria.Localization;
+using minecraftWitherinTerraria.NPCs;
+using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
 
 namespace minecraftWitherinTerraria.Tiles
 {
     public class Beacon : ModTile
     {
+        public static bool BeaconActivated = false;
         static void Talk(string message, int r=150, int g=250, int b=150)
         {
             //check to see if the world is singleplayer or multiplayer
@@ -53,8 +57,18 @@ namespace minecraftWitherinTerraria.Tiles
             if (TotalBars == 3 | TotalBars == 8 | TotalBars == 15 | TotalBars == 24)
             {
                 Talk("The Beacon is activated");
+                BeaconActivated = true;
+            } else
+            {
+                BeaconActivated = false;
             }
 
+            return true;
+        }
+
+        public override bool PreDraw(int i, int j, SpriteBatch spriteBatch)
+        {
+            player.NearBeacon = BeaconActivated;
             return true;
         }
     }
