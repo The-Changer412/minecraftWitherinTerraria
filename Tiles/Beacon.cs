@@ -22,8 +22,8 @@ namespace minecraftWitherinTerraria.Tiles
 
         public override void SetDefaults()
         {
-            //make the tile solid and not treat the image as a sprite sheet
-            Main.tileSolid[Type] = true;
+            //make the tile only solid on the top and not treat the image as a sprite sheet
+            Main.tileSolidTop[Type] = true;
             Main.tileFrameImportant[Type] = true;
 
             //make it drop it item version and color it on the map
@@ -35,38 +35,25 @@ namespace minecraftWitherinTerraria.Tiles
         public override bool TileFrame (int i, int j, ref bool resetFrame, ref bool noBreak)
         {
 
-
-            //239 is the tile id for all bars
-            if (Main.tile[i, j+1].type == 239)
+            //count how many bars have been placed.
+            int TotalBars = 0;
+            for(int yLayer = 1; yLayer<5; yLayer++)
             {
-                Talk("awdwadwad");
+                for (int xLayer = -yLayer; xLayer<yLayer+1; xLayer++)
+                {
+                    //239 is the tile id for all bars
+                    if (Main.tile[i+xLayer, j+yLayer].type == 239)
+                    {
+                        TotalBars++;
+                    }
+                }
             }
 
-            // //get all of the tiles in a T shape
-            // int center = Main.tile[i, j].type;
-            // int left = Main.tile[i-1, j].type;
-            // int right = Main.tile[i+1, j].type;
-            // int bottom = Main.tile[i, j+1].type;
-            // int topL = Main.tile[i-1, j-1].type;
-            // int topC = Main.tile[i, j-1].type;
-            // int topR = Main.tile[i+1, j-1].type;
-            //
-            // //check if the tiles in the t shape is has the right tiles to spawn in the wither
-            // if ((center==ModContent.TileType<Tiles.SoulSand>()) && (left==ModContent.TileType<Tiles.SoulSand>()) && (right==ModContent.TileType<Tiles.SoulSand>()) && (bottom==ModContent.TileType<Tiles.SoulSand>()) && (topL==ModContent.TileType<Tiles.WitherSkeletonSkull>()) && (topC==ModContent.TileType<Tiles.WitherSkeletonSkull>()) && (topR==ModContent.TileType<Tiles.WitherSkeletonSkull>()))
-            // {
-            //     //kill the tiles
-            //     WorldGen.KillTile(i, j, noItem: true);
-            //     WorldGen.KillTile(i-1, j, noItem: true);
-            //     WorldGen.KillTile(i+1, j, noItem: true);
-            //     WorldGen.KillTile(i, j+1, noItem: true);
-            //     WorldGen.KillTile(i-1, j-1, noItem: true);
-            //     WorldGen.KillTile(i, j-1, noItem: true);
-            //     WorldGen.KillTile(i+1, j-1, noItem: true);
-            //
-            //     //spawn in the wither
-            //     NPC.NewNPC((int) i * 16, (int) j*16, ModContent.NPCType<NPCs.Wither>());
-            //     Talk("The Wither has awoken!", 143, 61, 209);
-            // }
+            //if the
+            if (TotalBars == 3 | TotalBars == 8 | TotalBars == 15 | TotalBars == 24)
+            {
+                Talk("The Beacon is activated");
+            }
 
             return true;
         }
