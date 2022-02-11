@@ -49,7 +49,7 @@ namespace minecraftWitherinTerraria.NPCs
             //set the npc stats
             npc.width = 84;
             npc.height = 85;
-            npc.lifeMax = 100;
+            npc.lifeMax = 150000;
             npc.life = npc.lifeMax;
             npc.aiStyle = -1;
             npc.damage = 80;
@@ -159,7 +159,6 @@ namespace minecraftWitherinTerraria.NPCs
 
                 frameStart = 12;
                 frameEnd = Main.npcFrameCount[npc.type];
-                // Main.player[i].AddBuff(ModContent.BuffType<Buffs.FarFromWitherDebuff>(), 1000);
 
                 //make the wither attack
                 AttackAI();
@@ -176,7 +175,7 @@ namespace minecraftWitherinTerraria.NPCs
         public void NextState()
         {
             string[] options = new string[] {"move", "rapid shoot", "circle shoot", "opposite dir"};
-            // phase = options[Main.rand.Next(0, options.Length)];
+            phase = options[Main.rand.Next(0, options.Length)];
             Talk(phase);
             AICounter = 0;
         }
@@ -201,8 +200,9 @@ namespace minecraftWitherinTerraria.NPCs
                 //make the wither shoot his's head
                 if (AITimer < 0)
                 {
-                    float spd = 2.5f;
-                    Projectile.NewProjectile(npc.position.X, npc.position.Y, (Main.player[npc.target].position.X - npc.position.X) * spd, (Main.player[npc.target].position.Y - npc.position.Y) * spd, ModContent.ProjectileType<Projectiles.WitherHeadProjectile>(), (int)(npc.damage*.20f), 0f, Main.myPlayer, npc.whoAmI, Main.rand.Next());
+                    float spd = 30f;
+                    Vector2 dir  = new Vector2((Main.player[npc.target].position.X - npc.position.X)/spd, (Main.player[npc.target].position.Y - npc.position.Y)/spd);
+                    Projectile.NewProjectile(npc.position.X, npc.position.Y,  dir.X, dir.Y, ModContent.ProjectileType<Projectiles.WitherHeadProjectile>(), (int)(npc.damage*.20f), 0f, Main.myPlayer, npc.whoAmI, Main.rand.Next());
                     AITimer = AITimerMax;
                     AICounter++;
                 }
@@ -218,8 +218,9 @@ namespace minecraftWitherinTerraria.NPCs
                 //make the wither shoot his's head
                 if (AITimer < 0)
                 {
-                    float spd = 6f;
-                    Projectile.NewProjectile(npc.position.X, npc.position.Y, (Main.player[npc.target].position.X - npc.position.X) * spd, (Main.player[npc.target].position.Y - npc.position.Y) * spd, ModContent.ProjectileType<Projectiles.WitherHeadProjectile>(), (int)(npc.damage*.20f), 0f, Main.myPlayer, npc.whoAmI, Main.rand.Next());
+                    float spd = 30f;
+                    Vector2 dir  = new Vector2((Main.player[npc.target].position.X - npc.position.X)/spd, (Main.player[npc.target].position.Y - npc.position.Y)/spd);
+                    Projectile.NewProjectile(npc.position.X, npc.position.Y,  dir.X, dir.Y, ModContent.ProjectileType<Projectiles.WitherHeadProjectile>(), (int)(npc.damage*.20f), 0f, Main.myPlayer, npc.whoAmI, Main.rand.Next());
                     AITimer = AITimerMax;
                     AICounter++;
                 }
@@ -268,8 +269,9 @@ namespace minecraftWitherinTerraria.NPCs
                 //make the wither shoot his's head
                 if (AITimer < 0)
                 {
-                    float spd = 2.5f;
-                    Projectile.NewProjectile(npc.position.X, npc.position.Y, (Main.player[npc.target].position.X - npc.position.X) * spd, (Main.player[npc.target].position.Y - npc.position.Y) * spd, ModContent.ProjectileType<Projectiles.WitherHeadProjectile>(), (int)(npc.damage*.20f), 0f, Main.myPlayer, npc.whoAmI, Main.rand.Next());
+                    float spd = 30f;
+                    Vector2 dir  = new Vector2((Main.player[npc.target].position.X - npc.position.X)/spd, (Main.player[npc.target].position.Y - npc.position.Y)/spd);
+                    Projectile.NewProjectile(npc.position.X, npc.position.Y,  dir.X, dir.Y, ModContent.ProjectileType<Projectiles.WitherHeadProjectile>(), (int)(npc.damage*.20f), 0f, Main.myPlayer, npc.whoAmI, Main.rand.Next());
                     AITimer = AITimerMax;
                     AICounter++;
                 }

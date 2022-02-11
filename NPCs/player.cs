@@ -54,9 +54,9 @@ namespace minecraftWitherinTerraria.NPCs
                 }
             }
 
+            //check if beacon is activated
             if (BeaconActivated)
             {
-
                 //get the distance between the beacon and the player, and also convert it to double
                 float xDis = (BeaconX - player.position.X/16);
                 float yDis = (BeaconY - player.position.Y/16);

@@ -33,12 +33,18 @@ namespace minecraftWitherinTerraria.Projectiles
 		//set the stats for the projectile
 		public override void SetDefaults()
 		{
-			projectile.aiStyle = 1;
+			// projectile.aiStyle = 1;
 			projectile.width = 24;
             projectile.height = 24;
             projectile.hostile = true;
             projectile.ignoreWater = true;
             projectile.noDropItem = true;
+		}
+
+		public override void AI()
+		{
+			projectile.position += projectile.velocity;
+			Talk((projectile.velocity).ToString());
 		}
 
         //make it where the wither can't be hurt by it's own head

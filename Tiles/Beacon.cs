@@ -12,6 +12,18 @@ namespace minecraftWitherinTerraria.Tiles
 {
     public class Beacon : ModTile
     {
+        //a function that send a message to the chat.
+        static void Talk(string message, int r=150, int g=250, int b=150) {
+
+            //check to see if the world is singleplayer or multiplayer
+            if (Main.netMode != NetmodeID.Server) {
+                Main.NewText(message, (byte)r, (byte)g, (byte)b);
+            }
+            else {
+                NetMessage.BroadcastChatMessage(NetworkText.FromLiteral(message), new Color(r, g, b));
+            }
+        }
+
         //create a variable for the beacon activation
         public static bool BeaconActivated = false;
 
