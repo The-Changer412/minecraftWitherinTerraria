@@ -9,8 +9,8 @@ namespace minecraftWitherinTerraria.Tiles
 {
     public class SoulSand : ModTile
     {
+        //a function for sending a message to the player in the chat
         static void Talk(string message, int r=150, int g=250, int b=150) {
-
             //check to see if the world is singleplayer or multiplayer
             if (Main.netMode != NetmodeID.Server) {
                 Main.NewText(message, (byte)r, (byte)g, (byte)b);
@@ -35,6 +35,17 @@ namespace minecraftWitherinTerraria.Tiles
         public override void FloorVisuals (Player player)
         {
             player.AddBuff(BuffID.Slow, 2);
+        }
+
+        //play a sound when placing the soul sand
+        public override void PlaceInWorld(int i, int j, Item item)
+        {
+            Main.PlaySound(SoundLoader.customSoundType, -1, -1, mod.GetSoundSlot(SoundType.Custom, "Sounds/soul_sand/break1"), 1, 1f);
+        }
+        //play a sound when destroying the soul sand
+        public override void KillTile(int i, int j, ref bool fail, ref bool effectOnly, ref bool noItem)
+        {
+            Main.PlaySound(SoundLoader.customSoundType, -1, -1, mod.GetSoundSlot(SoundType.Custom, "Sounds/soul_sand/break3"), 1, 1f);
         }
 
         //check if the soul sand is placed in a T shape with wither skeleton skulls on it when a tile is placed down or a tile is near it

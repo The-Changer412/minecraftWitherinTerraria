@@ -26,6 +26,8 @@ namespace minecraftWitherinTerraria.Tiles
 
         //create a variable for the beacon activation
         public static bool BeaconActivated = false;
+        public static bool SoundPlayedActivated = false;
+        public static bool SoundPlayedDeactivated = false;
 
         public override void SetDefaults()
         {
@@ -61,9 +63,14 @@ namespace minecraftWitherinTerraria.Tiles
             {
                 Talk("The Beacon is activated");
                 BeaconActivated = true;
+
+                Main.PlaySound(SoundLoader.customSoundType, -1, -1, mod.GetSoundSlot(SoundType.Custom, "Sounds/beacon/activate"), 1, 1f);
+
             } else
             {
+                Talk("the beam isnt active");
                 BeaconActivated = false;
+                Main.PlaySound(SoundLoader.customSoundType, -1, -1, mod.GetSoundSlot(SoundType.Custom, "Sounds/beacon/deactivate"), 1, 1f);
             }
 
             return true;
