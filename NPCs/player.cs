@@ -13,7 +13,20 @@ namespace minecraftWitherinTerraria.NPCs
         //set the stats
         public static int WitherWhoAmI = 0;
         public static string state = "null";
-        public static bool NearBeacon = false;
+        public static bool BeaconActivated = false;
+        public static int BeaconX = 0;
+        public static int BeaconY = 0;
+
+        static void Talk(string message, int r=150, int g=250, int b=150)
+        {
+            //check to see if the world is singleplayer or multiplayer
+            if (Main.netMode != NetmodeID.Server) {
+                Main.NewText(message, (byte)r, (byte)g, (byte)b);
+            }
+            else {
+                NetMessage.BroadcastChatMessage(NetworkText.FromLiteral(message), new Color(r, g, b));
+            }
+        }
 
         //run some code after the update
         public override void PostUpdate()
@@ -40,15 +53,30 @@ namespace minecraftWitherinTerraria.NPCs
 
                 }
             }
-            if (NearBeacon)
+
+            if (BeaconActivated)
             {
-                player.AddBuff(BuffID.Regeneration, 1);
-                player.AddBuff(BuffID.Swiftness, 1);
-                player.AddBuff(BuffID.Ironskin, 1);
-                player.AddBuff(BuffID.Mining, 1);
-                player.AddBuff(BuffID.Shine, 1);
-                player.AddBuff(BuffID.NightOwl, 1);
-                player.AddBuff(BuffID.Calm, 1);
+
+                //get the distance between the beacon and the player, and also convert it to double
+                float xDis = (BeaconX - player.position.X/16);
+                float yDis = (BeaconY - player.position.Y/16);
+                decimal xDisDec = new decimal(xDis);
+                double xDisDou = (double)xDisDec;
+                decimal yDisDec = new decimal(yDis);
+                double yDisDou = (double)yDisDec;
+                double dis = Math.Sqrt(Math.Pow(xDisDou, 2) + Math.Pow(yDisDou, 2));
+
+                //check if the beacon is still there, and if the player is less then 75 pixels away from it
+                if (Main.tile[BeaconX, BeaconY].type == ModContent.TileType<Tiles.Beacon>() && dis <= 75)
+                {
+                    player.AddBuff(BuffID.Regeneration, 1);
+                    player.AddBuff(BuffID.Swiftness, 1);
+                    player.AddBuff(BuffID.Ironskin, 1);
+                    player.AddBuff(BuffID.Mining, 1);
+                    player.AddBuff(BuffID.Shine, 1);
+                    player.AddBuff(BuffID.NightOwl, 1);
+                    player.AddBuff(BuffID.Calm, 1);
+                }
             }
         }
 

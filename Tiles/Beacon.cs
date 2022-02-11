@@ -12,17 +12,8 @@ namespace minecraftWitherinTerraria.Tiles
 {
     public class Beacon : ModTile
     {
+        //create a variable for the beacon activation
         public static bool BeaconActivated = false;
-        static void Talk(string message, int r=150, int g=250, int b=150)
-        {
-            //check to see if the world is singleplayer or multiplayer
-            if (Main.netMode != NetmodeID.Server) {
-                Main.NewText(message, (byte)r, (byte)g, (byte)b);
-            }
-            else {
-                NetMessage.BroadcastChatMessage(NetworkText.FromLiteral(message), new Color(r, g, b));
-            }
-        }
 
         public override void SetDefaults()
         {
@@ -53,8 +44,8 @@ namespace minecraftWitherinTerraria.Tiles
                 }
             }
 
-            //if the
-            if (TotalBars == 3 | TotalBars == 8 | TotalBars == 15 | TotalBars == 24)
+            //if the player has made the four layer pyramid then activate the beacon
+            if (TotalBars == 24)
             {
                 Talk("The Beacon is activated");
                 BeaconActivated = true;
@@ -68,7 +59,17 @@ namespace minecraftWitherinTerraria.Tiles
 
         public override bool PreDraw(int i, int j, SpriteBatch spriteBatch)
         {
-            player.NearBeacon = BeaconActivated;
+            //every frame, send to the player if any beacon is activated and it's position
+            player.BeaconActivated = BeaconActivated;
+            if (BeaconActivated)
+            {
+                player.BeaconX = i;
+                player.BeaconY = j;
+            }
+            else {
+                player.BeaconX = 0;
+                player.BeaconY = 0;
+            }
             return true;
         }
     }
