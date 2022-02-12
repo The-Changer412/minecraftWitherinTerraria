@@ -67,7 +67,7 @@ namespace minecraftWitherinTerraria.NPCs
                 double dis = Math.Sqrt(Math.Pow(xDisDou, 2) + Math.Pow(yDisDou, 2));
 
                 //check if the beacon is still there, and if the player is less then 75 pixels away from it
-                if (Main.tile[BeaconX, BeaconY].type == ModContent.TileType<Tiles.Beacon>() && dis <= 75)
+                if (Main.tile[BeaconX, BeaconY].type == ModContent.TileType<Tiles.Beacon>() && dis <= 160)
                 {
                     player.AddBuff(BuffID.Regeneration, 1);
                     player.AddBuff(BuffID.Swiftness, 1);

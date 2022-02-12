@@ -64,6 +64,7 @@ namespace minecraftWitherinTerraria.NPCs
             npc.noGravity = true;
             npc.noTileCollide = true;
             npc.boss = true;
+            music = MusicID.Boss2;
 
             //reset the wither variables
             state = "spawning";
@@ -73,6 +74,8 @@ namespace minecraftWitherinTerraria.NPCs
             AITimerMax = 50;
             AITimer = AITimerMax;
             AICounter = 0;
+
+            Main.PlaySound(SoundLoader.customSoundType, -1, -1, mod.GetSoundSlot(SoundType.Custom, "Sounds/wither/spawn"), 1, 1f);
         }
 
         //set the ai for the wither
@@ -202,7 +205,7 @@ namespace minecraftWitherinTerraria.NPCs
                 {
                     float spd = 30f;
                     Vector2 dir  = new Vector2((Main.player[npc.target].position.X - npc.position.X)/spd, (Main.player[npc.target].position.Y - npc.position.Y)/spd);
-                    Projectile.NewProjectile(npc.position.X, npc.position.Y,  dir.X, dir.Y, ModContent.ProjectileType<Projectiles.WitherHeadProjectile>(), (int)(npc.damage*.20f), 0f, Main.myPlayer, npc.whoAmI, Main.rand.Next());
+                    Projectile.NewProjectile(npc.position.X, npc.position.Y,  dir.X, dir.Y, ModContent.ProjectileType<Projectiles.WitherHeadProjectile>(), (int)(npc.damage*0.50f), 0f, Main.myPlayer, npc.whoAmI, Main.rand.Next());
                     AITimer = AITimerMax;
                     AICounter++;
                 }
@@ -220,7 +223,7 @@ namespace minecraftWitherinTerraria.NPCs
                 {
                     float spd = 30f;
                     Vector2 dir  = new Vector2((Main.player[npc.target].position.X - npc.position.X)/spd, (Main.player[npc.target].position.Y - npc.position.Y)/spd);
-                    Projectile.NewProjectile(npc.position.X, npc.position.Y,  dir.X, dir.Y, ModContent.ProjectileType<Projectiles.WitherHeadProjectile>(), (int)(npc.damage*.20f), 0f, Main.myPlayer, npc.whoAmI, Main.rand.Next());
+                    Projectile.NewProjectile(npc.position.X, npc.position.Y,  dir.X, dir.Y, ModContent.ProjectileType<Projectiles.WitherHeadProjectile>(), (int)(npc.damage*0.50f), 0f, Main.myPlayer, npc.whoAmI, Main.rand.Next());
                     AITimer = AITimerMax;
                     AICounter++;
                 }
@@ -250,7 +253,7 @@ namespace minecraftWitherinTerraria.NPCs
                     AITimerMax = 30;
                     float spd = 16f;
                     dir*=spd;
-                    Projectile.NewProjectile(npc.position.X, npc.position.Y, dir.X, dir.Y, ModContent.ProjectileType<Projectiles.WitherHeadProjectile>(), (int)(npc.damage*.20f), 0f, Main.myPlayer, npc.whoAmI, Main.rand.Next());
+                    Projectile.NewProjectile(npc.position.X, npc.position.Y, dir.X, dir.Y, ModContent.ProjectileType<Projectiles.WitherHeadProjectile>(), (int)(npc.damage*0.50f), 0f, Main.myPlayer, npc.whoAmI, Main.rand.Next());
                     AITimer = AITimerMax;
                     AICounter++;
                 }
@@ -271,7 +274,7 @@ namespace minecraftWitherinTerraria.NPCs
                 {
                     float spd = 30f;
                     Vector2 dir  = new Vector2((Main.player[npc.target].position.X - npc.position.X)/spd, (Main.player[npc.target].position.Y - npc.position.Y)/spd);
-                    Projectile.NewProjectile(npc.position.X, npc.position.Y,  dir.X, dir.Y, ModContent.ProjectileType<Projectiles.WitherHeadProjectile>(), (int)(npc.damage*.20f), 0f, Main.myPlayer, npc.whoAmI, Main.rand.Next());
+                    Projectile.NewProjectile(npc.position.X, npc.position.Y,  dir.X, dir.Y, ModContent.ProjectileType<Projectiles.WitherHeadProjectile>(), (int)(npc.damage*0.50f), 0f, Main.myPlayer, npc.whoAmI, Main.rand.Next());
                     AITimer = AITimerMax;
                     AICounter++;
                 }
@@ -335,6 +338,7 @@ namespace minecraftWitherinTerraria.NPCs
             Gore.NewGore(npc.position, npc.velocity, mod.GetGoreSlot("Gores/WitherGoreTail"), 1f);
             player.WitherWhoAmI = 0;
             Talk("The Wither has been defeated!", 143, 61, 209);
+            Main.PlaySound(SoundLoader.customSoundType, -1, -1, mod.GetSoundSlot(SoundType.Custom, "Sounds/wither/death"), 1, 1f);
             return true;
         }
 

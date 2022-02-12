@@ -38,12 +38,13 @@ namespace minecraftWitherinTerraria.Projectiles
             projectile.hostile = true;
             projectile.ignoreWater = true;
             projectile.noDropItem = true;
+
+			Main.PlaySound(SoundLoader.customSoundType, -1, -1, mod.GetSoundSlot(SoundType.Custom, "Sounds/wither/shoot"), 1, 1f);
 		}
 
 		public override void AI()
 		{
 			projectile.position += projectile.velocity;
-			Talk((projectile.velocity).ToString());
 		}
 
         //make it where the wither can't be hurt by it's own head
