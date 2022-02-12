@@ -179,7 +179,6 @@ namespace minecraftWitherinTerraria.NPCs
         {
             string[] options = new string[] {"move", "rapid shoot", "circle shoot", "opposite dir"};
             phase = options[Main.rand.Next(0, options.Length)];
-            Talk(phase);
             AICounter = 0;
         }
 

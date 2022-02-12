@@ -17,17 +17,6 @@ namespace minecraftWitherinTerraria.NPCs
         public static int BeaconX = 0;
         public static int BeaconY = 0;
 
-        static void Talk(string message, int r=150, int g=250, int b=150)
-        {
-            //check to see if the world is singleplayer or multiplayer
-            if (Main.netMode != NetmodeID.Server) {
-                Main.NewText(message, (byte)r, (byte)g, (byte)b);
-            }
-            else {
-                NetMessage.BroadcastChatMessage(NetworkText.FromLiteral(message), new Color(r, g, b));
-            }
-        }
-
         //run some code after the update
         public override void PostUpdate()
         {

@@ -1,3 +1,4 @@
 displayName = Minecraft Wither
-author = bossmania
-version = 0.1
+author = The Changer412
+version = 1.0
+buildIgnore = "GIMP Saves"/*

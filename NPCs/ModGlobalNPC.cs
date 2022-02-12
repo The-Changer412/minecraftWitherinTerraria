@@ -17,7 +17,7 @@ namespace minecraftWitherinTerraria.NPCs
         {
           if (npc.type == NPCID.MoonLordCore && minecraftWitherinTerraria.MinecraftWither.hellMessage == false)
           {
-            string message = "The curse, that the moon lord has put in the underworld, has been removed.";
+            string message = "By killing the Moon Lord, a new enemy has appeared in the underworld.";
 
             //check to see if the world is singleplayer or multiplayer
             if (Main.netMode != NetmodeID.Server) {

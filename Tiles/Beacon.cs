@@ -12,18 +12,6 @@ namespace minecraftWitherinTerraria.Tiles
 {
     public class Beacon : ModTile
     {
-        //a function that send a message to the chat.
-        static void Talk(string message, int r=150, int g=250, int b=150) {
-
-            //check to see if the world is singleplayer or multiplayer
-            if (Main.netMode != NetmodeID.Server) {
-                Main.NewText(message, (byte)r, (byte)g, (byte)b);
-            }
-            else {
-                NetMessage.BroadcastChatMessage(NetworkText.FromLiteral(message), new Color(r, g, b));
-            }
-        }
-
         //create a variable for the beacon activation
         public static bool BeaconActivated = false;
         public static bool SoundPlayedActivated = false;
@@ -61,14 +49,12 @@ namespace minecraftWitherinTerraria.Tiles
             //if the player has made the four layer pyramid then activate the beacon
             if (TotalBars == 24)
             {
-                Talk("The Beacon is activated");
                 BeaconActivated = true;
 
                 Main.PlaySound(SoundLoader.customSoundType, -1, -1, mod.GetSoundSlot(SoundType.Custom, "Sounds/beacon/activate"), 1, 1f);
 
             } else
             {
-                Talk("the beam isnt active");
                 BeaconActivated = false;
                 Main.PlaySound(SoundLoader.customSoundType, -1, -1, mod.GetSoundSlot(SoundType.Custom, "Sounds/beacon/deactivate"), 1, 1f);
             }

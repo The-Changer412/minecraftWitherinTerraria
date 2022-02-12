@@ -9,19 +9,6 @@ namespace minecraftWitherinTerraria.Projectiles
 {
 	public class WitherHeadProjectile : ModProjectile
 	{
-
-        //a temporary function that send a message to the chat for debugging purpose.
-        static void Talk(string message, int r=150, int g=250, int b=150) {
-
-            //check to see if the world is singleplayer or multiplayer
-            if (Main.netMode != NetmodeID.Server) {
-                Main.NewText(message, (byte)r, (byte)g, (byte)b);
-            }
-            else {
-                NetMessage.BroadcastChatMessage(NetworkText.FromLiteral(message), new Color(r, g, b));
-            }
-        }
-
 		//set the static stats for the projectile
 		public override void SetStaticDefaults()
 		{
