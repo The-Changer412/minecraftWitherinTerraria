@@ -99,7 +99,7 @@ namespace minecraftWitherinTerraria.NPCs
         //give the skull of the wither skeleton a 5% chance to drop from the wither skeleton and a 100% chance to drop the soul sand
         public override void NPCLoot()
         {
-            if (Main.rand.Next(0, 101) <= 5)
+            if (Main.rand.Next(0, 101) <= 10)
             {
                 Item.NewItem(npc.getRect(), ModContent.ItemType<Items.WitherSkeletonSkull>(), 1);
             }

@@ -1,4 +1,5 @@
 displayName = Minecraft Wither
-author = The Changer412
+author = The Changer
 version = 1.0
 buildIgnore = "GIMP Saves"/*
+homepage =https://github.com/The-Changer412/minecraftWitherinTerraria
