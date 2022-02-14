@@ -15,7 +15,7 @@ namespace minecraftWitherinTerraria.NPCs
     {
         public override bool CheckDead(NPC npc)
         {
-          if (npc.type == NPCID.MoonLordCore && minecraftWitherinTerraria.MinecraftWither.hellMessage == false)
+          if (npc.type == NPCID.MoonLordCore && World.hellMessage == false)
           {
             string message = "By killing the Moon Lord, a new enemy has appeared in the underworld.";
 
@@ -29,7 +29,7 @@ namespace minecraftWitherinTerraria.NPCs
                 NetMessage.BroadcastChatMessage(NetworkText.FromLiteral(message), new Color(255, 46, 46));
             }
 
-            minecraftWitherinTerraria.MinecraftWither.hellMessage = true;
+            World.hellMessage = true;
           }
           return true;
         }

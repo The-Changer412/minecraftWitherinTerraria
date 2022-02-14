@@ -329,15 +329,24 @@ namespace minecraftWitherinTerraria.NPCs
         //create the gore when the wither die
         public override bool CheckDead()
         {
+            //make the gore
             Gore.NewGore(npc.position, npc.velocity, mod.GetGoreSlot("Gores/WitherGoreHead"), 1f);
             Gore.NewGore(npc.position, npc.velocity, mod.GetGoreSlot("Gores/WitherGoreHead"), 1f);
             Gore.NewGore(npc.position, npc.velocity, mod.GetGoreSlot("Gores/WitherGoreHead"), 1f);
             Gore.NewGore(npc.position, npc.velocity, mod.GetGoreSlot("Gores/WitherGoreNeck"), 1f);
             Gore.NewGore(npc.position, npc.velocity, mod.GetGoreSlot("Gores/WitherGoreBody"), 1f);
             Gore.NewGore(npc.position, npc.velocity, mod.GetGoreSlot("Gores/WitherGoreTail"), 1f);
+
+            //reset the player info
             player.WitherWhoAmI = 0;
+            player.state = "null";
+
+            //tell the player that the wither is dead, and play the death sound
             Talk("The Wither has been defeated!", 143, 61, 209);
             Main.PlaySound(SoundLoader.customSoundType, -1, -1, mod.GetSoundSlot(SoundType.Custom, "Sounds/wither/death"), 1, 1f);
+
+            //set the wither downed to true
+            World.DownedWither = true;
             return true;
         }
 
