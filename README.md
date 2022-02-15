@@ -1,4 +1,4 @@
-# About: 
+# About:  
 
 This is a mod that adds in post Moon Lord content. The mod include a new enemy, a new boss, four new items, and two new debuffs.
 
