@@ -15,11 +15,11 @@ namespace minecraftWitherinTerraria.Items
 
         //set the stats of the item
         public override void SetDefaults() {
-			item.width = 16;
-			item.height = 16;
-			item.maxStack = 999;
-            item.value = 40462;
-            item.rare = ItemRarityID.Purple;
+			Item.width = 16;
+			Item.height = 16;
+			Item.maxStack = 999;
+            Item.value = 40462;
+            Item.rare = ItemRarityID.Purple;
 		}
     }
 }

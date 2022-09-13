@@ -1,0 +1,10 @@
+{
+  "version": 2,
+  "dgSpecHash": "2Ywhy9gocTXg7j9AU7wjxvhRDKVf63mrrXaf+qnSbEfC9hibn6p+IES+aWmG9VBuzO1yiV1CpN0B/ukVkwatWQ==",
+  "success": true,
+  "projectFilePath": "C:\\Users\\Owner\\Documents\\My Games\\Terraria\\tModLoader\\ModSources\\minecraftWitherinTerraria\\minecraftWitherinTerraria.csproj",
+  "expectedPackageFiles": [
+    "C:\\Users\\Owner\\.nuget\\packages\\tmodloader.codeassist\\0.1.5\\tmodloader.codeassist.0.1.5.nupkg.sha512"
+  ],
+  "logs": []
+}

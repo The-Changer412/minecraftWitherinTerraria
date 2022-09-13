@@ -1,11 +1,8 @@
 using Microsoft.Xna.Framework;
 using Terraria;
-using Terraria.ID;
+using Terraria.Audio;
 using Terraria.ModLoader;
-using Terraria.Enums;
-using Terraria.Localization;
 using minecraftWitherinTerraria.NPCs;
-using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
 namespace minecraftWitherinTerraria.Tiles
@@ -17,14 +14,14 @@ namespace minecraftWitherinTerraria.Tiles
         public static bool SoundPlayedActivated = false;
         public static bool SoundPlayedDeactivated = false;
 
-        public override void SetDefaults()
+        public override void SetStaticDefaults()
         {
             //make the tile only solid on the top and not treat the image as a sprite sheet
             Main.tileSolidTop[Type] = true;
             Main.tileFrameImportant[Type] = true;
 
             //make it drop it item version and color it on the map
-            drop = ModContent.ItemType<Items.Beacon>();
+            ItemDrop = ModContent.ItemType<Items.Beacon>();
     		AddMapEntry(new Color(43, 203, 192));
         }
 
@@ -39,7 +36,7 @@ namespace minecraftWitherinTerraria.Tiles
                 for (int xLayer = -yLayer; xLayer<yLayer+1; xLayer++)
                 {
                     //239 is the tile id for all bars
-                    if (Main.tile[i+xLayer, j+yLayer].type == 239)
+                    if (Main.tile[i+xLayer, j+yLayer].TileType == 239)
                     {
                         TotalBars++;
                     }
@@ -50,13 +47,12 @@ namespace minecraftWitherinTerraria.Tiles
             if (TotalBars == 24)
             {
                 BeaconActivated = true;
-
-                Main.PlaySound(SoundLoader.customSoundType, -1, -1, mod.GetSoundSlot(SoundType.Custom, "Sounds/beacon/activate"), 1, 1f);
+                SoundEngine.PlaySound(new SoundStyle("minecraftWitherinTerraria/Sounds/beacon/activate"));
 
             } else
             {
                 BeaconActivated = false;
-                Main.PlaySound(SoundLoader.customSoundType, -1, -1, mod.GetSoundSlot(SoundType.Custom, "Sounds/beacon/deactivate"), 1, 1f);
+                SoundEngine.PlaySound(new SoundStyle("minecraftWitherinTerraria/Sounds/beacon/deactivate"));
             }
 
             return true;

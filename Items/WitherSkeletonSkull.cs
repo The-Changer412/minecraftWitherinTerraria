@@ -15,16 +15,16 @@ namespace minecraftWitherinTerraria.Items
 
         //set the stats of the item
         public override void SetDefaults() {
-			item.width = 23;
-			item.height = 23;
-			item.maxStack = 999;
-			item.useTurn = true;
-			item.autoReuse = true;
-			item.useAnimation = 15;
-			item.useTime = 10;
-			item.useStyle = ItemUseStyleID.SwingThrow;
-			item.consumable = true;
-			item.createTile = ModContent.TileType<Tiles.WitherSkeletonSkull>();
+			Item.width = 23;
+			Item.height = 23;
+			Item.maxStack = 999;
+			Item.useTurn = true;
+			Item.autoReuse = true;
+			Item.useAnimation = 15;
+			Item.useTime = 10;
+			Item.useStyle = ItemUseStyleID.Swing;
+			Item.consumable = true;
+			Item.createTile = ModContent.TileType<Tiles.WitherSkeletonSkull>();
 		}
     }
 }

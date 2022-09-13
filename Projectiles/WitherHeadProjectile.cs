@@ -1,9 +1,12 @@
 using Terraria;
+using Terraria.Audio;
 using Terraria.ID;
 using Terraria.ModLoader;
-using Terraria.Localization;
-using static Terraria.ModLoader.ModContent;
 using Microsoft.Xna.Framework;
+using Terraria.DataStructures;
+using Terraria.GameContent.Creative;
+using Terraria.Localization;    
+using static Terraria.ModLoader.ModContent;
 
 namespace minecraftWitherinTerraria.Projectiles
 {
@@ -13,25 +16,25 @@ namespace minecraftWitherinTerraria.Projectiles
 		public override void SetStaticDefaults()
 		{
 			DisplayName.SetDefault("Wither's Head Projectile");
-			ProjectileID.Sets.TrailCacheLength[projectile.type] = 5;
-            ProjectileID.Sets.TrailingMode[projectile.type] = 0;
+			ProjectileID.Sets.TrailCacheLength[Projectile.type] = 5;
+            ProjectileID.Sets.TrailingMode[Projectile.type] = 0;
 		}
 
 		//set the stats for the projectile
 		public override void SetDefaults()
 		{
-			projectile.width = 24;
-            projectile.height = 24;
-            projectile.hostile = true;
-            projectile.ignoreWater = true;
-            projectile.noDropItem = true;
+			Projectile.width = 24;
+            Projectile.height = 24;
+            Projectile.hostile = true;
+            Projectile.ignoreWater = true;
+            Projectile.noDropItem = true;
 
-			Main.PlaySound(SoundLoader.customSoundType, -1, -1, mod.GetSoundSlot(SoundType.Custom, "Sounds/wither/shoot"), 1, 1f);
+            SoundEngine.PlaySound(new SoundStyle("minecraftWitherinTerraria/Sounds/wither/shoot"));
 		}
 
 		public override void AI()
 		{
-			projectile.position += projectile.velocity;
+			Projectile.position += Projectile.velocity;
 		}
 
         //make it where the wither can't be hurt by it's own head
@@ -51,10 +54,10 @@ namespace minecraftWitherinTerraria.Projectiles
         {
             if (Main.expertMode == true)
             {
-              target.AddBuff(mod.BuffType("WitherDebuff"), 900);
+              target.AddBuff(Mod.Find<ModBuff>("WitherDebuff").Type, 900);
             } else
             {
-              target.AddBuff(mod.BuffType("WitherDebuff"), 600);
+              target.AddBuff(Mod.Find<ModBuff>("WitherDebuff").Type, 600);
             }
         }
 	}

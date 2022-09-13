@@ -2,6 +2,8 @@ using System;
 using System.Collections.Generic;
 using Microsoft.Xna.Framework;
 using Terraria;
+using Terraria.Audio;
+using Terraria.Chat;
 using Terraria.ID;
 using Terraria.ModLoader;
 using Terraria.Localization;
@@ -33,38 +35,38 @@ namespace minecraftWitherinTerraria.NPCs
                 Main.NewText(message, (byte)r, (byte)g, (byte)b);
             }
             else {
-                NetMessage.BroadcastChatMessage(NetworkText.FromLiteral(message), new Color(r, g, b));
+                ChatHelper.BroadcastChatMessage(NetworkText.FromLiteral(message), new Color(r, g, b));
             }
         }
 
         public override void SetStaticDefaults()
         {
             //set the amount of frames
-            Main.npcFrameCount[npc.type] = 21;
+            Main.npcFrameCount[NPC.type] = 21;
         }
 
         //set the stats of the wither skeleton
         public override void SetDefaults()
         {
             //set the npc stats
-            npc.width = 84;
-            npc.height = 85;
-            npc.lifeMax = 150000;
-            npc.life = npc.lifeMax;
-            npc.aiStyle = -1;
-            npc.damage = 80;
-            npc.defense = 10;
-            npc.value = 20000f;
-            npc.buffImmune[BuffID.OnFire] = true;
-            npc.buffImmune[BuffID.Frostburn] = true;
-            npc.buffImmune[BuffID.Frozen] = true;
-            npc.buffImmune[BuffID.Chilled] = true;
-            npc.lavaImmune = true;
-            npc.knockBackResist = 0f;
-            npc.noGravity = true;
-            npc.noTileCollide = true;
-            npc.boss = true;
-            music = MusicID.Boss2;
+            NPC.width = 84;
+            NPC.height = 85;
+            NPC.lifeMax = 150000;
+            NPC.life = NPC.lifeMax;
+            NPC.aiStyle = -1;
+            NPC.damage = 80;
+            NPC.defense = 10;
+            NPC.value = 20000f;
+            NPC.buffImmune[BuffID.OnFire] = true;
+            NPC.buffImmune[BuffID.Frostburn] = true;
+            NPC.buffImmune[BuffID.Frozen] = true;
+            NPC.buffImmune[BuffID.Chilled] = true;
+            NPC.lavaImmune = true;
+            NPC.knockBackResist = 0f;
+            NPC.noGravity = true;
+            NPC.noTileCollide = true;
+            NPC.boss = true;
+            Music = MusicID.Boss2;
 
             //reset the wither variables
             state = "spawning";
@@ -75,37 +77,37 @@ namespace minecraftWitherinTerraria.NPCs
             AITimer = AITimerMax;
             AICounter = 0;
 
-            Main.PlaySound(SoundLoader.customSoundType, -1, -1, mod.GetSoundSlot(SoundType.Custom, "Sounds/wither/spawn"), 1, 1f);
+            SoundEngine.PlaySound(new SoundStyle("minecraftWitherinTerraria/Sounds/wither/spawn"));
         }
 
         //set the ai for the wither
         public override void AI()
         {
             //tell the player the wither who am i and the state the wither is
-            player.WitherWhoAmI = npc.whoAmI;
+            player.WitherWhoAmI = NPC.whoAmI;
             player.state = state;
 
             //make the wither skeleton shine light at him
-            Lighting.AddLight(npc.position, 3, 3, 3);
+            Lighting.AddLight(NPC.position, 3, 3, 3);
 
             //check what state the wither is in
             if (state == "spawning")
             {
                 //set the stats for the spawning state
-                npc.damage = 0;
-                npc.dontTakeDamage = true;
+                NPC.damage = 0;
+                NPC.dontTakeDamage = true;
                 frameStart = 0;
                 frameEnd = 1;
-                npc.frameCounter = frameStart;
+                NPC.frameCounter = frameStart;
 
                 if (AICounter == 0)
                 {
-                    npc.position.Y += 32;
+                    NPC.position.Y += 32;
                     AICounter++;
                 }
 
                 //slowly grow the wither and tick down the AI timer
-                npc.scale += 0.001f;
+                NPC.scale += 0.001f;
                 AITimer -= 1;
 
                 //switch between tplayerhe normal sprite and the blue sprite and speed it up
@@ -133,9 +135,9 @@ namespace minecraftWitherinTerraria.NPCs
                 }
 
                 //when the wither hits a certian state, then switch the state to 1st phase
-                if (npc.scale >= 1.25f)
+                if (NPC.scale >= 1.25f)
                 {
-                    npc.scale = 1.25f;
+                    NPC.scale = 1.25f;
                     state = "1st phase";
                     AICounter = 0;
                 }
@@ -143,9 +145,9 @@ namespace minecraftWitherinTerraria.NPCs
             else if (state == "1st phase")
             {
                 //set the stats for the 1st phase
-                npc.dontTakeDamage = false;
-                npc.damage = 50;
-                npc.defense = 10;
+                NPC.dontTakeDamage = false;
+                NPC.damage = 50;
+                NPC.defense = 10;
 
                 frameStart = 2;
                 frameEnd = 11;
@@ -156,19 +158,19 @@ namespace minecraftWitherinTerraria.NPCs
             else if (state == "2nd phase")
             {
                 //set the stats for the 2nd phase
-                npc.dontTakeDamage = false;
-                npc.damage = 80;
-                npc.defense = 20;
+                NPC.dontTakeDamage = false;
+                NPC.damage = 80;
+                NPC.defense = 20;
 
                 frameStart = 12;
-                frameEnd = Main.npcFrameCount[npc.type];
+                frameEnd = Main.npcFrameCount[NPC.type];
 
                 //make the wither attack
                 AttackAI();
             }
 
             //switch to 2nd phase at half hp
-            if (npc.life <= npc.lifeMax / 2 && state != "2nd phase")
+            if (NPC.life <= NPC.lifeMax / 2 && state != "2nd phase")
             {
                 state = "2nd phase";
             }
@@ -190,21 +192,21 @@ namespace minecraftWitherinTerraria.NPCs
             float hoverDis = 248;
 
             //make the wither target the closest player
-            npc.TargetClosest(true);
+            NPC.TargetClosest(true);
 
             if (phase == "move")
             {
                 AITimerMax = 50f;
                 //make the wither hover near the player
-                npc.position.X = MathHelper.Lerp(npc.position.X, Main.player[npc.target].position.X - (hoverDis*npc.direction), moveSpd);
-                npc.position.Y = MathHelper.Lerp(npc.position.Y, Main.player[npc.target].position.Y - hoverDis, moveSpd);
+                NPC.position.X = MathHelper.Lerp(NPC.position.X, Main.player[NPC.target].position.X - (hoverDis*NPC.direction), moveSpd);
+                NPC.position.Y = MathHelper.Lerp(NPC.position.Y, Main.player[NPC.target].position.Y - hoverDis, moveSpd);
 
                 //make the wither shoot his's head
                 if (AITimer < 0)
                 {
                     float spd = 30f;
-                    Vector2 dir  = new Vector2((Main.player[npc.target].position.X - npc.position.X)/spd, (Main.player[npc.target].position.Y - npc.position.Y)/spd);
-                    Projectile.NewProjectile(npc.position.X, npc.position.Y,  dir.X, dir.Y, ModContent.ProjectileType<Projectiles.WitherHeadProjectile>(), (int)(npc.damage*0.50f), 0f, Main.myPlayer, npc.whoAmI, Main.rand.Next());
+                    Vector2 dir  = new Vector2((Main.player[NPC.target].position.X - NPC.position.X)/spd, (Main.player[NPC.target].position.Y - NPC.position.Y)/spd);
+                    Projectile.NewProjectile(Player.GetSource_NaturalSpawn(), NPC.position.X, NPC.position.Y,  dir.X, dir.Y, ModContent.ProjectileType<Projectiles.WitherHeadProjectile>(), (int)(NPC.damage*0.50f), 0f, Main.myPlayer, NPC.whoAmI, Main.rand.Next());
                     AITimer = AITimerMax;
                     AICounter++;
                 }
@@ -221,8 +223,8 @@ namespace minecraftWitherinTerraria.NPCs
                 if (AITimer < 0)
                 {
                     float spd = 30f;
-                    Vector2 dir  = new Vector2((Main.player[npc.target].position.X - npc.position.X)/spd, (Main.player[npc.target].position.Y - npc.position.Y)/spd);
-                    Projectile.NewProjectile(npc.position.X, npc.position.Y,  dir.X, dir.Y, ModContent.ProjectileType<Projectiles.WitherHeadProjectile>(), (int)(npc.damage*0.50f), 0f, Main.myPlayer, npc.whoAmI, Main.rand.Next());
+                    Vector2 dir  = new Vector2((Main.player[NPC.target].position.X - NPC.position.X)/spd, (Main.player[NPC.target].position.Y - NPC.position.Y)/spd);
+                    Projectile.NewProjectile(Player.GetSource_NaturalSpawn(), NPC.position.X, NPC.position.Y,  dir.X, dir.Y, ModContent.ProjectileType<Projectiles.WitherHeadProjectile>(), (int)(NPC.damage*0.50f), 0f, Main.myPlayer, NPC.whoAmI, Main.rand.Next());
                     AITimer = AITimerMax;
                     AICounter++;
                 }
@@ -252,7 +254,7 @@ namespace minecraftWitherinTerraria.NPCs
                     AITimerMax = 30;
                     float spd = 16f;
                     dir*=spd;
-                    Projectile.NewProjectile(npc.position.X, npc.position.Y, dir.X, dir.Y, ModContent.ProjectileType<Projectiles.WitherHeadProjectile>(), (int)(npc.damage*0.50f), 0f, Main.myPlayer, npc.whoAmI, Main.rand.Next());
+                    Projectile.NewProjectile(Player.GetSource_NaturalSpawn(), NPC.position.X, NPC.position.Y, dir.X, dir.Y, ModContent.ProjectileType<Projectiles.WitherHeadProjectile>(), (int)(NPC.damage*0.50f), 0f, Main.myPlayer, NPC.whoAmI, Main.rand.Next());
                     AITimer = AITimerMax;
                     AICounter++;
                 }
@@ -265,15 +267,15 @@ namespace minecraftWitherinTerraria.NPCs
             {
                 AITimerMax = 50f;
                 //make the wither hover infront of the player
-                npc.position.X = MathHelper.Lerp(npc.position.X, Main.player[npc.target].position.X - (hoverDis*-Main.player[npc.target].direction), moveSpd);
-                npc.position.Y = MathHelper.Lerp(npc.position.Y, Main.player[npc.target].position.Y - hoverDis, moveSpd);
+                NPC.position.X = MathHelper.Lerp(NPC.position.X, Main.player[NPC.target].position.X - (hoverDis*-Main.player[NPC.target].direction), moveSpd);
+                NPC.position.Y = MathHelper.Lerp(NPC.position.Y, Main.player[NPC.target].position.Y - hoverDis, moveSpd);
 
                 //make the wither shoot his's head
                 if (AITimer < 0)
                 {
                     float spd = 30f;
-                    Vector2 dir  = new Vector2((Main.player[npc.target].position.X - npc.position.X)/spd, (Main.player[npc.target].position.Y - npc.position.Y)/spd);
-                    Projectile.NewProjectile(npc.position.X, npc.position.Y,  dir.X, dir.Y, ModContent.ProjectileType<Projectiles.WitherHeadProjectile>(), (int)(npc.damage*0.50f), 0f, Main.myPlayer, npc.whoAmI, Main.rand.Next());
+                    Vector2 dir  = new Vector2((Main.player[NPC.target].position.X - NPC.position.X)/spd, (Main.player[NPC.target].position.Y - NPC.position.Y)/spd);
+                    Projectile.NewProjectile(Player.GetSource_NaturalSpawn(), NPC.position.X, NPC.position.Y,  dir.X, dir.Y, ModContent.ProjectileType<Projectiles.WitherHeadProjectile>(), (int)(NPC.damage*0.50f), 0f, Main.myPlayer, NPC.whoAmI, Main.rand.Next());
                     AITimer = AITimerMax;
                     AICounter++;
                 }
@@ -293,10 +295,10 @@ namespace minecraftWitherinTerraria.NPCs
         {
           if (Main.expertMode == true)
           {
-            target.AddBuff(mod.BuffType("WitherDebuff"), 900);
+            target.AddBuff(Mod.Find<ModBuff>("WitherDebuff").Type, 900);
           } else
           {
-            target.AddBuff(mod.BuffType("WitherDebuff"), 600);
+            target.AddBuff(Mod.Find<ModBuff>("WitherDebuff").Type, 600);
           }
         }
 
@@ -305,24 +307,24 @@ namespace minecraftWitherinTerraria.NPCs
         public override void FindFrame(int frameHeight)
         {
           //set the wither sprite to face the player
-            npc.spriteDirection = -npc.direction;
+            NPC.spriteDirection = -NPC.direction;
 
 
             //animate him normaly if the wither is not in the spawning state
             if (state != "spawning")
             {
                 //iter over each frame of the wither
-                npc.frameCounter++;
-                npc.frame.Y =(int) (npc.frameCounter * npc.height);
-                if (npc.frameCounter >= frameEnd)
+                NPC.frameCounter++;
+                NPC.frame.Y =(int) (NPC.frameCounter * NPC.height);
+                if (NPC.frameCounter >= frameEnd)
                 {
-                    npc.frameCounter = frameStart;
-                    npc.frame.Y =(int) (npc.frameCounter * npc.height);
+                    NPC.frameCounter = frameStart;
+                    NPC.frame.Y =(int) (NPC.frameCounter * NPC.height);
                 }
             }
             else
             {
-                npc.frame.Y =(int) (frameState * npc.height);
+                NPC.frame.Y =(int) (frameState * NPC.height);
             }
         }
 
@@ -330,12 +332,12 @@ namespace minecraftWitherinTerraria.NPCs
         public override bool CheckDead()
         {
             //make the gore
-            Gore.NewGore(npc.position, npc.velocity, mod.GetGoreSlot("Gores/WitherGoreHead"), 1f);
-            Gore.NewGore(npc.position, npc.velocity, mod.GetGoreSlot("Gores/WitherGoreHead"), 1f);
-            Gore.NewGore(npc.position, npc.velocity, mod.GetGoreSlot("Gores/WitherGoreHead"), 1f);
-            Gore.NewGore(npc.position, npc.velocity, mod.GetGoreSlot("Gores/WitherGoreNeck"), 1f);
-            Gore.NewGore(npc.position, npc.velocity, mod.GetGoreSlot("Gores/WitherGoreBody"), 1f);
-            Gore.NewGore(npc.position, npc.velocity, mod.GetGoreSlot("Gores/WitherGoreTail"), 1f);
+            Gore.NewGore(Player.GetSource_NaturalSpawn(), NPC.position, NPC.velocity, ModContent.GoreType<Gores.WitherGoreHead>());
+            Gore.NewGore(Player.GetSource_NaturalSpawn(), NPC.position, NPC.velocity, ModContent.GoreType<Gores.WitherGoreHead>());
+            Gore.NewGore(Player.GetSource_NaturalSpawn(), NPC.position, NPC.velocity, ModContent.GoreType<Gores.WitherGoreHead>());
+            Gore.NewGore(Player.GetSource_NaturalSpawn(), NPC.position, NPC.velocity, ModContent.GoreType<Gores.WitherGoreNeck>());
+            Gore.NewGore(Player.GetSource_NaturalSpawn(), NPC.position, NPC.velocity, ModContent.GoreType<Gores.WitherGoreBody>());
+            Gore.NewGore(Player.GetSource_NaturalSpawn(), NPC.position, NPC.velocity, ModContent.GoreType<Gores.WitherGoreTail>());
 
             //reset the player info
             player.WitherWhoAmI = 0;
@@ -343,7 +345,7 @@ namespace minecraftWitherinTerraria.NPCs
 
             //tell the player that the wither is dead, and play the death sound
             Talk("The Wither has been defeated!", 143, 61, 209);
-            Main.PlaySound(SoundLoader.customSoundType, -1, -1, mod.GetSoundSlot(SoundType.Custom, "Sounds/wither/death"), 1, 1f);
+            SoundEngine.PlaySound(new SoundStyle("minecraftWitherinTerraria/Sounds/wither/death"));
 
             //set the wither downed to true
             World.DownedWither = true;
@@ -351,9 +353,9 @@ namespace minecraftWitherinTerraria.NPCs
         }
 
         //give the skull of the wither skeleton a 5% chance to drop from the wither skeleton and a 100% chance to drop the soul sand
-        public override void NPCLoot()
+        public override void OnKill()
         {
-            Item.NewItem(npc.getRect(), ModContent.ItemType<Items.NetherStar>(), 1);
+            Item.NewItem(Player.GetSource_NaturalSpawn(), NPC.position, Vector2.One, ModContent.ItemType<Items.NetherStar>(), 1);
         }
     }
 }

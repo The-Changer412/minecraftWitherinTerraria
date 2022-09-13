@@ -6,6 +6,8 @@ using Terraria.ID;
 using Terraria.ModLoader;
 using Terraria.Localization;
 using Terraria.Enums;
+using Terraria.ModLoader.Utilities;
+using minecraftWitherinTerraria.Gores;
 
 namespace minecraftWitherinTerraria.NPCs
 {
@@ -15,43 +17,43 @@ namespace minecraftWitherinTerraria.NPCs
         public override void SetStaticDefaults()
         {
             //set the amount of frames
-            Main.npcFrameCount[npc.type] = 10;
+            Main.npcFrameCount[NPC.type] = 10;
         }
 
         //set the stats of the wither skeleton
         public override void SetDefaults()
         {
-            npc.width = 36;
-            npc.height = 67;
-            npc.lifeMax = 1200;
-            npc.life = npc.lifeMax;
-            npc.aiStyle = 3;
-            npc.damage = 100;
-            npc.defense = 40;
-            npc.value = 2000f;
-            npc.buffImmune[BuffID.OnFire] = true;
-            npc.lavaImmune = true;
-            npc.knockBackResist = 0.25f;
+            NPC.width = 36;
+            NPC.height = 67;
+            NPC.lifeMax = 1200;
+            NPC.life = NPC.lifeMax;
+            NPC.aiStyle = 3;
+            NPC.damage = 100;
+            NPC.defense = 40;
+            NPC.value = 2000f;
+            NPC.buffImmune[BuffID.OnFire] = true;
+            NPC.lavaImmune = true;
+            NPC.knockBackResist = 0.25f;
         }
 
         public override void AI()
         {
-            //make the wither skeleton target the closest player
-            npc.TargetClosest(true);
+            //make the wither skeleton target the closest Player
+            NPC.TargetClosest(true);
 
             //make the wither skeleton shine light at him
-            Lighting.AddLight(npc.position, 3, 3, 3);
+            Lighting.AddLight(NPC.position, 3, 3, 3);
         }
 
-        //give the player poison when hitted
+        //give the Player poison when hitted
         public override void OnHitPlayer (Player target, int damage, bool crit)
         {
           if (Main.expertMode == true)
           {
-            target.AddBuff(mod.BuffType("WitherDebuff"), 900);
+            target.AddBuff(Mod.Find<ModBuff>("WitherDebuff").Type, 900);
           } else
           {
-            target.AddBuff(mod.BuffType("WitherDebuff"), 600);
+            target.AddBuff(Mod.Find<ModBuff>("WitherDebuff").Type, 600);
           }
         }
 
@@ -59,28 +61,28 @@ namespace minecraftWitherinTerraria.NPCs
         //animate the wither skeleton
         public override void FindFrame(int frameHeight)
         {
-          //set the wither skeelton sprite to face the player
-            npc.spriteDirection = -npc.direction;
+          //set the wither skeelton sprite to face the Player
+            NPC.spriteDirection = -NPC.direction;
 
             //iter over each frame of the wither skeleton
-            npc.frameCounter++;
-            npc.frame.Y =(int) (npc.frameCounter * frameHeight);
-            if (npc.frameCounter >= Main.npcFrameCount[npc.type])
+            NPC.frameCounter++;
+            NPC.frame.Y =(int) (NPC.frameCounter * frameHeight);
+            if (NPC.frameCounter >= Main.npcFrameCount[NPC.type])
             {
-                npc.frameCounter = 0;
-                npc.frame.Y =(int) (npc.frameCounter * frameHeight);
+                NPC.frameCounter = 0;
+                NPC.frame.Y =(int) (NPC.frameCounter * frameHeight);
             }
         }
 
         //create the gore when the wither skeleton die
         public override bool CheckDead()
         {
-            Gore.NewGore(npc.position, npc.velocity, mod.GetGoreSlot("Gores/WitherSkeletonGoreHead"), 1f);
-            Gore.NewGore(npc.position, npc.velocity, mod.GetGoreSlot("Gores/WitherSkeletonGoreBody"), 1f);
-            Gore.NewGore(npc.position, npc.velocity, mod.GetGoreSlot("Gores/WitherSkeletonGoreArm"), 1f);
-            Gore.NewGore(npc.position, npc.velocity, mod.GetGoreSlot("Gores/WitherSkeletonGoreArm"), 1f);
-            Gore.NewGore(npc.position, npc.velocity, mod.GetGoreSlot("Gores/WitherSkeletonGoreLeg"), 1f);
-            Gore.NewGore(npc.position, npc.velocity, mod.GetGoreSlot("Gores/WitherSkeletonGoreLeg"), 1f);
+            Gore.NewGore(Player.GetSource_NaturalSpawn(), NPC.position, NPC.velocity, ModContent.GoreType<Gores.WitherSkeletonGoreHead>());
+            Gore.NewGore(Player.GetSource_NaturalSpawn(), NPC.position, NPC.velocity, ModContent.GoreType<Gores.WitherSkeletonGoreBody>());
+            Gore.NewGore(Player.GetSource_NaturalSpawn(), NPC.position, NPC.velocity, ModContent.GoreType<Gores.WitherSkeletonGoreArm>());
+            Gore.NewGore(Player.GetSource_NaturalSpawn(), NPC.position, NPC.velocity, ModContent.GoreType<Gores.WitherSkeletonGoreArm>());
+            Gore.NewGore(Player.GetSource_NaturalSpawn(), NPC.position, NPC.velocity, ModContent.GoreType<Gores.WitherSkeletonGoreLeg>());
+            Gore.NewGore(Player.GetSource_NaturalSpawn(), NPC.position, NPC.velocity, ModContent.GoreType<Gores.WitherSkeletonGoreLeg>());
             return true;
         }
 
@@ -97,13 +99,13 @@ namespace minecraftWitherinTerraria.NPCs
         }
 
         //give the skull of the wither skeleton a 5% chance to drop from the wither skeleton and a 100% chance to drop the soul sand
-        public override void NPCLoot()
+        public override void OnKill()
         {
             if (Main.rand.Next(0, 101) <= 10)
             {
-                Item.NewItem(npc.getRect(), ModContent.ItemType<Items.WitherSkeletonSkull>(), 1);
+                Item.NewItem(Player.GetSource_NaturalSpawn(), NPC.position, Vector2.One, ModContent.ItemType<Items.WitherSkeletonSkull>(), 1);
             }
-            Item.NewItem(npc.getRect(), ModContent.ItemType<Items.SoulSand>(), 1);
+            Item.NewItem(Player.GetSource_NaturalSpawn(), NPC.position, Vector2.One, ModContent.ItemType<Items.SoulSand>(), 1);
         }
     }
 }

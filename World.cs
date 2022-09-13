@@ -7,24 +7,21 @@ using minecraftWitherinTerraria;
 
 namespace minecraftWitherinTerraria
 {
-    public class World : ModWorld
+    public class World : ModSystem
     {
         //create variables
         public static bool DownedWither = false;
         public static bool hellMessage = false;
 
         //save the hellMessage and downedWither to the world
-        public override TagCompound Save()
+        public override void SaveWorldData(TagCompound tag)
         {
-            return new TagCompound
-            {
-                [nameof(hellMessage)] = hellMessage,
-                [nameof(DownedWither)] = DownedWither
-            };
+            tag[nameof(hellMessage)] = hellMessage;
+            tag[nameof(DownedWither)] = DownedWither;
         }
 
         //load the hellMessage to the world
-        public override void Load(TagCompound tag)
+        public override void LoadWorldData(TagCompound tag)
         {
             hellMessage = tag.GetBool(nameof(hellMessage));
             DownedWither = tag.GetBool(nameof(DownedWither));

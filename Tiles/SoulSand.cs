@@ -1,5 +1,7 @@
 using Microsoft.Xna.Framework;
 using Terraria;
+using Terraria.Audio;
+using Terraria.Chat;
 using Terraria.ID;
 using Terraria.ModLoader;
 using Terraria.Enums;
@@ -16,18 +18,18 @@ namespace minecraftWitherinTerraria.Tiles
                 Main.NewText(message, (byte)r, (byte)g, (byte)b);
             }
             else {
-                NetMessage.BroadcastChatMessage(NetworkText.FromLiteral(message), new Color(r, g, b));
+                ChatHelper.BroadcastChatMessage(NetworkText.FromLiteral(message), new Color(r, g, b));
             }
         }
 
-        public override void SetDefaults()
+        public override void SetStaticDefaults()
         {
             //make the tile solid and not treat the image as a sprite sheet
             Main.tileSolid[Type] = true;
             Main.tileFrameImportant[Type] = true;
 
             //make it drop it item version and color it on the map
-            drop = ModContent.ItemType<Items.SoulSand>();
+            ItemDrop = ModContent.ItemType<Items.SoulSand>();
     		AddMapEntry(new Color(73, 55, 44));
         }
 
@@ -40,25 +42,25 @@ namespace minecraftWitherinTerraria.Tiles
         //play a sound when placing the soul sand
         public override void PlaceInWorld(int i, int j, Item item)
         {
-            Main.PlaySound(SoundLoader.customSoundType, -1, -1, mod.GetSoundSlot(SoundType.Custom, "Sounds/soul_sand/break1"), 1, 1f);
+            SoundEngine.PlaySound(new SoundStyle("minecraftWitherinTerraria/Sounds/soul_sand/break1"));
         }
         //play a sound when destroying the soul sand
         public override void KillTile(int i, int j, ref bool fail, ref bool effectOnly, ref bool noItem)
         {
-            Main.PlaySound(SoundLoader.customSoundType, -1, -1, mod.GetSoundSlot(SoundType.Custom, "Sounds/soul_sand/break3"), 1, 1f);
+            SoundEngine.PlaySound(new SoundStyle("minecraftWitherinTerraria/Sounds/soul_sand/break3"));
         }
 
         //check if the soul sand is placed in a T shape with wither skeleton skulls on it when a tile is placed down or a tile is near it
         public override bool TileFrame (int i, int j, ref bool resetFrame, ref bool noBreak)
         {
             //get all of the tiles in a T shape
-            int center = Main.tile[i, j].type;
-            int left = Main.tile[i-1, j].type;
-            int right = Main.tile[i+1, j].type;
-            int bottom = Main.tile[i, j+1].type;
-            int topL = Main.tile[i-1, j-1].type;
-            int topC = Main.tile[i, j-1].type;
-            int topR = Main.tile[i+1, j-1].type;
+            int center = Main.tile[i, j].TileType;
+            int left = Main.tile[i-1, j].TileType;
+            int right = Main.tile[i+1, j].TileType;
+            int bottom = Main.tile[i, j+1].TileType;
+            int topL = Main.tile[i-1, j-1].TileType;
+            int topC = Main.tile[i, j-1].TileType;
+            int topR = Main.tile[i+1, j-1].TileType;
 
             //check if the tiles in the t shape is has the right tiles to spawn in the wither
             if ((center==ModContent.TileType<Tiles.SoulSand>()) && (left==ModContent.TileType<Tiles.SoulSand>()) && (right==ModContent.TileType<Tiles.SoulSand>()) && (bottom==ModContent.TileType<Tiles.SoulSand>()) && (topL==ModContent.TileType<Tiles.WitherSkeletonSkull>()) && (topC==ModContent.TileType<Tiles.WitherSkeletonSkull>()) && (topR==ModContent.TileType<Tiles.WitherSkeletonSkull>()))
@@ -73,7 +75,7 @@ namespace minecraftWitherinTerraria.Tiles
                 WorldGen.KillTile(i+1, j-1, noItem: true);
 
                 //spawn in the wither
-                NPC.NewNPC((int) i * 16, (int) j*16, ModContent.NPCType<NPCs.Wither>());
+                NPC.NewNPC(Player.GetSource_NaturalSpawn(), (int) i * 16, (int) j*16, ModContent.NPCType<NPCs.Wither>());
                 Talk("The Wither has awoken!", 143, 61, 209);
             }
 
