@@ -2,6 +2,10 @@
 
 This is a mod that adds in post Moon Lord content. The mod include a new enemy, a new boss, four new items, and two new debuffs.
 
+# Download:
+
+You can download the mod from the [Steam Workshop](https://steamcommunity.com/sharedfiles/filedetails/?id=2875108073), or from the [GitHub release page](https://github.com/The-Changer412/minecraftWitherinTerraria/releases/tag/Release).
+
 # Mod Content:
 
 ## NPCs:
@@ -57,14 +61,10 @@ The Wither debuff is a debuff that takes away health from the player over time.
 
 Far From Wither Debuff:
 
-The
- Far From Wither debuff is a debuff that prevents the player from doing 
+The Far From Wither debuff is a debuff that prevents the player from doing 
 damage to the wither in its second phase if they are far from the 
 wither.
 
-# Download:
-
-You can download the mod from the mod browser, or from the [GitHub release page](https://github.com/The-Changer412/minecraftWitherinTerraria/releases/tag/Release).
 
 # Other:
 
